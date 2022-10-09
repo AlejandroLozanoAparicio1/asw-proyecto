@@ -1,16 +1,25 @@
-package Models;
+package com.example.demo.Models;
 
+import net.bytebuddy.dynamic.loading.InjectionClassLoader;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "persona")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private String username;
+    @Column
     private String created;
+    @Column
     private Integer karma;
+    @Column
     private String about;
 
-    public User(String username, String created, Integer karma, String about){
-        setUsername(username);
-        setCreated(created);
-        setKarma(karma);
-        setAbout(about);
+    public User() {
+
     }
 
     public String getUsername() {
