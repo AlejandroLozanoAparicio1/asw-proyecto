@@ -1,13 +1,16 @@
 package com.example.demo.User;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class UserController {
-    UserService userService = new UserService();
+    @Autowired
+    UserService userService;
+
     @GetMapping("user/get")
     public List<User> getUsers(){
         return userService.getUser();
