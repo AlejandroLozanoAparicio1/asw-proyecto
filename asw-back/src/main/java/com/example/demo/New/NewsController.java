@@ -1,6 +1,5 @@
-package com.example.demo.Controllers;
+package com.example.demo.New;
 
-import com.example.demo.Service.NewsService;
 import org.springframework.stereotype.Controller;
 
 @Controller

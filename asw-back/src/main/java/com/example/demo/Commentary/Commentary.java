@@ -1,4 +1,6 @@
-package com.example.demo.Models;
+package com.example.demo.Commentary;
+
+import com.example.demo.User.User;
 
 public class Commentary {
     private User user;

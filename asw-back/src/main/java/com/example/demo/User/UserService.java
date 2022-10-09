@@ -1,7 +1,5 @@
-package com.example.demo.Service;
+package com.example.demo.User;
 
-import com.example.demo.Models.User;
-import com.example.demo.Repositories.HackNewsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;

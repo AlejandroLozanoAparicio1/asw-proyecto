@@ -1,4 +1,4 @@
-package com.example.demo.Models;
+package com.example.demo.User;
 
 import net.bytebuddy.dynamic.loading.InjectionClassLoader;
 
