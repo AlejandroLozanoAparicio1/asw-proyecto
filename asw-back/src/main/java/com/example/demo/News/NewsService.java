@@ -27,11 +27,10 @@ public class NewsService {
         return newsRepository.findById(id);
     }
 
-    public void createNews(String title, String page, Integer points, String publisher, String datePublished, /*List<Commentary> commentaries,*/String link) {
-        if (hkRepository.existsById(publisher)) {
-            User user = hkRepository.getReferenceById(publisher);
-            newsRepository.save(new News(title, page, points, user, datePublished, link));
-        }
+    public void createNews(News news) {
+        //if (hkRepository.existsById(news.getPublisher().getUsername())) {
+            newsRepository.save(news);
+        //}
     }
 
 

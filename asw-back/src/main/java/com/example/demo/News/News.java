@@ -20,9 +20,9 @@ public class News {
 
     @OneToOne
     @JoinColumn(name = "username", referencedColumnName = "username")
-    private User publisher;
+    private User username;
     @Column
-    private String datePublished;
+    private String date_published;
     //@Column
     //private List<Commentary> comments;
     @Column
@@ -37,8 +37,8 @@ public class News {
         this.title = title;
         this.page_ = page;
         this.points = points;
-        this.publisher = publisher;
-        this.datePublished = datePublished;
+        this.username = publisher;
+        this.date_published = datePublished;
         //this.comments = commentaries;
         this.link = link;
     }
@@ -67,20 +67,20 @@ public class News {
         this.points = points;
     }
 
-    public User getPublisher() {
-        return publisher;
+    public User getUsername() {
+        return username;
     }
 
-    public void setPublisher(User publisher) {
-        this.publisher = publisher;
+    public void setUsername(User publisher) {
+        this.username = publisher;
     }
 
-    public String getDatePublished() {
-        return datePublished;
+    public String getDate_published() {
+        return date_published;
     }
 
-    public void setDatePublished(String datePublished) {
-        this.datePublished = datePublished;
+    public void setDate_published(String datePublished) {
+        this.date_published = datePublished;
     }
 
     /*

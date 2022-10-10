@@ -2,8 +2,10 @@ package com.example.demo.News;
 
 import com.example.demo.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -35,7 +37,7 @@ public class NewsController {
     }
 
     @PostMapping("news/post")
-    public void getNews(String title, String page, Integer points, String publisher, String datePublished, /*List<Commentary> commentaries,*/String link) {
-        newsService.createNews(title, page, points, publisher, datePublished, link);
+    public void getNews(@RequestBody News news) {
+        newsService.createNews(news);
     }
 }
