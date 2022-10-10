@@ -1,4 +1,4 @@
-package com.example.demo.New;
+package com.example.demo.News;
 
 import org.springframework.stereotype.Controller;
 

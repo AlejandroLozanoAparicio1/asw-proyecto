@@ -1,11 +1,11 @@
-package com.example.demo.New;
+package com.example.demo.News;
 
 import com.example.demo.Commentary.Commentary;
 import com.example.demo.User.User;
 
 import java.util.List;
 
-public class New {
+public class News {
     private String itemId;
     private String title;
     private String page;
@@ -15,8 +15,8 @@ public class New {
     private List<Commentary> commentaries;
     private String link;
 
-    New(String title, String page, Integer points, User publisher, String datePublised, List<Commentary> commentaries,
-        String link){
+    News(String title, String page, Integer points, User publisher, String datePublised, List<Commentary> commentaries,
+         String link){
         this.title = title;
         this.page = page;
         this.points = points;
