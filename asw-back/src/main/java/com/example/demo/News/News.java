@@ -1,10 +1,8 @@
 package com.example.demo.News;
 
-import com.example.demo.Commentary.Commentary;
 import com.example.demo.User.User;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "news")
@@ -16,7 +14,7 @@ public class News {
     @Column
     private String title;
     @Column
-    private String page;
+    private String page_;
     @Column
     private Integer points;
 
@@ -35,9 +33,9 @@ public class News {
     }
 
     public News(String title, String page, Integer points, User publisher, String datePublished, /*List<Commentary> commentaries,*/
-         String link){
+         String link) {
         this.title = title;
-        this.page = page;
+        this.page_ = page;
         this.points = points;
         this.publisher = publisher;
         this.datePublished = datePublished;
@@ -53,12 +51,12 @@ public class News {
         this.title = title;
     }
 
-    public String getPage() {
-        return page;
+    public String getPage_() {
+        return page_;
     }
 
-    public void setPage(String page) {
-        this.page = page;
+    public void setPage_(String page) {
+        this.page_ = page;
     }
 
     public Integer getPoints() {
@@ -100,5 +98,13 @@ public class News {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public Long getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
     }
 }
