@@ -20,7 +20,8 @@ public class News {
     @Column
     private Integer points;
 
-    @OneToOne(mappedBy = "username")
+    @OneToOne
+    @JoinColumn(name = "username", referencedColumnName = "username")
     private User publisher;
     @Column
     private String datePublished;
