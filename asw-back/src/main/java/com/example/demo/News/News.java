@@ -3,28 +3,47 @@ package com.example.demo.News;
 import com.example.demo.Commentary.Commentary;
 import com.example.demo.User.User;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "news")
 public class News {
-    private String itemId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column
+    private Long itemId;
+    @Column
     private String title;
+    @Column
     private String page;
+    @Column
     private Integer points;
+
+    @OneToOne(mappedBy = "username")
     private User publisher;
-    private String datePublised;
-    private List<Commentary> commentaries;
+    @Column
+    private String datePublished;
+    //@Column
+    //private List<Commentary> comments;
+    @Column
     private String link;
 
-    News(String title, String page, Integer points, User publisher, String datePublised, List<Commentary> commentaries,
+    public News() {
+
+    }
+
+    public News(String title, String page, Integer points, User publisher, String datePublished, /*List<Commentary> commentaries,*/
          String link){
         this.title = title;
         this.page = page;
         this.points = points;
         this.publisher = publisher;
-        this.datePublised = datePublised;
-        this.commentaries = commentaries;
+        this.datePublished = datePublished;
+        //this.comments = commentaries;
         this.link = link;
     }
+
     public String getTitle() {
         return title;
     }
@@ -57,22 +76,23 @@ public class News {
         this.publisher = publisher;
     }
 
-    public String getDatePublised() {
-        return datePublised;
+    public String getDatePublished() {
+        return datePublished;
     }
 
-    public void setDatePublised(String datePublised) {
-        this.datePublised = datePublised;
+    public void setDatePublished(String datePublished) {
+        this.datePublished = datePublished;
     }
 
-    public List<Commentary> getCommentaries() {
-        return commentaries;
+    /*
+    public List<Commentary> getComments() {
+        return comments;
     }
 
-    public void setCommentaries(List<Commentary> commentaries) {
-        this.commentaries = commentaries;
+    public void setComments(List<Commentary> comments) {
+        this.comments = comments;
     }
-
+    */
     public String getLink() {
         return link;
     }

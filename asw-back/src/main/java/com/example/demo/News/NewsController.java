@@ -1,10 +1,14 @@
 package com.example.demo.News;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import java.util.List;
+
+@RestController
 public class NewsController {
-    private NewsService newsService = new NewsService();
+    //private NewsService newsService = new NewsService();
 
     /*
     @GetMapping("getNew")
@@ -12,4 +16,13 @@ public class NewsController {
         return newsService.getNew();
     }
      */
+
+    @Autowired
+    NewsService newsService;
+
+
+    @GetMapping("news/get")
+    public List<News> getNewss(){
+        return newsService.getNews();
+    }
 }
