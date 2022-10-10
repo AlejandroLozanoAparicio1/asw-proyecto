@@ -13,4 +13,7 @@ public class UserService {
     public List<User> getUser(){
         return hackNewsRepository.findAll();
     }
+    public void insertUser(User user){
+        hackNewsRepository.save(user);
+    }
 }
