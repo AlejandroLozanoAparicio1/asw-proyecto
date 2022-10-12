@@ -17,9 +17,9 @@ public class User {
     private Integer karma;
     @Column
     private String about;
-
+    @Column
+    private String pass;
     public User() {
-
     }
 
     public String getUsername() {
@@ -52,5 +52,13 @@ public class User {
 
     public void setAbout(String about) {
         this.about = about;
+    }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
     }
 }
