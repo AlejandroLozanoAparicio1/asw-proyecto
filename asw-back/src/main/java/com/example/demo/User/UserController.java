@@ -13,12 +13,12 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping("user/get")
+    @GetMapping("user/users")
     public List<User> getUsers(){
         return userService.getUser();
     }
 
-    @PostMapping("user/set")
+    @PostMapping("user/user")
     public void insertUser(@RequestBody User user ){
         userService.insertUser(user);
     }
