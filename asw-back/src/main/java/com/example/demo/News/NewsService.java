@@ -1,7 +1,5 @@
 package com.example.demo.News;
 
-import com.example.demo.User.HackNewsRepository;
-import com.example.demo.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -11,7 +9,6 @@ import java.util.Optional;
 
 @Service
 public class NewsService {
-
     NewsService() {}
 
     @Autowired
@@ -28,9 +25,4 @@ public class NewsService {
     public void createNews(News news) {
         newsRepository.save(news);
     }
-
-
-    /*public News getNew(){
-        return new News();
-    }*/
 }
