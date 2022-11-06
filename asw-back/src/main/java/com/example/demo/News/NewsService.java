@@ -16,8 +16,6 @@ public class NewsService {
 
     @Autowired
     private NewsRepository newsRepository;
-    @Autowired
-    private HackNewsRepository hkRepository;
 
     public List<News> getNewsList() {
         return newsRepository.findAll(Sort.by(Sort.Direction.DESC, "points"));
@@ -28,9 +26,7 @@ public class NewsService {
     }
 
     public void createNews(News news) {
-        //if (hkRepository.existsById(news.getPublisher().getUsername())) {
-            newsRepository.save(news);
-        //}
+        newsRepository.save(news);
     }
 
 
