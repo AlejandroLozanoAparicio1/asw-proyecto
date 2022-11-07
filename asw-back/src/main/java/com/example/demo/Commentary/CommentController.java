@@ -16,17 +16,17 @@ public class CommentController {
 
 
     @GetMapping("commentlist/get")
-    public List<Commentary> getCommentList() {
+    public List<Comment> getCommentList() {
         return commentService.getCommentList();
     }
 
     @GetMapping("comment/get")
-    public Optional<Commentary> getComment(Long id) {
+    public Optional<Comment> getComment(Long id) {
         return commentService.getComment(id);
     }
 
     @PostMapping("comment/post")
-    public void getComment(@RequestBody Commentary comment) {
+    public void getComment(@RequestBody Comment comment) {
         commentService.createComment(comment);
     }
 }

@@ -1,10 +1,8 @@
 package com.example.demo.News;
 
+import com.example.demo.Commentary.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,4 +26,15 @@ public class NewsController {
     public void getNews(@RequestBody News news) {
         newsService.createNews(news);
     }
+
+    /*
+    @GetMapping("news/get/comments")
+    public List<Comment> getComments(Long id) {
+        return newsService.getComments(id);
+    }
+
+    @PutMapping ("news/comment/{id}")
+    public void addComment(Long id, @PathVariable("id") Long commentId) {
+        newsService.newComment(id, commentId);
+    }*/
 }

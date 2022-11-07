@@ -1,6 +1,5 @@
 package com.example.demo.Commentary;
 
-import com.example.demo.News.News;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -15,15 +14,17 @@ public class CommentService {
     @Autowired
     private CommentRepository commRepository;
 
-    public List<Commentary> getCommentList() {
+    public List<Comment> getCommentList() {
         return commRepository.findAll(Sort.by(Sort.Direction.DESC, "time"));
     }
 
-    public Optional<Commentary> getComment(Long id) {
+    public Optional<Comment> getComment(Long id) {
         return commRepository.findById(id);
     }
 
-    public void createComment(Commentary comment) {
+    public void createComment(Comment comment) {
         commRepository.save(comment);
     }
+
+
 }

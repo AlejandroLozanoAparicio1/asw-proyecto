@@ -1,8 +1,12 @@
 package com.example.demo.News;
 
+import com.example.demo.Commentary.Comment;
 import com.example.demo.User.User;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "news")
@@ -23,17 +27,19 @@ public class News {
     private User username;
     @Column
     private String date_published;
-    //@Column
-    //private List<Commentary> comments;
+
     @Column
     private String link;
+
+    /*
+    @OneToMany()
+    private List<Comment> comments = new ArrayList<Comment>();*/
 
     public News() {
 
     }
 
-    public News(String title, String page, Integer points, User publisher, String datePublished, /*List<Commentary> commentaries,*/
-         String link) {
+    public News(String title, String page, Integer points, User publisher, String datePublished, /*List<Comment> commentaries,*/ String link) {
         this.title = title;
         this.page_ = page;
         this.points = points;
@@ -83,15 +89,20 @@ public class News {
         this.date_published = datePublished;
     }
 
-    /*
-    public List<Commentary> getComments() {
+/*
+    public List<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(List<Commentary> comments) {
+    public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
-    */
+
+    public void addComment(Comment comment) {
+        System.out.println(comment.getTitle());
+        this.comments.add(comment);
+    }*/
+
     public String getLink() {
         return link;
     }
