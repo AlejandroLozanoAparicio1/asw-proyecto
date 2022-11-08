@@ -38,8 +38,8 @@ public class NewsController {
         return newsService.getComments(id);
     }
 
-    @PutMapping ("news/comment/{id}")
-    public void addComment(Long id, @PathVariable("id") Long commentId) {
-        newsService.newComment(id, commentId);
+    @PutMapping("news/{id}/newcomment")
+    public void addComment(@PathVariable("id") Long id, @RequestBody Comment comment) {
+        newsService.newComment(id, comment);
     }
 }

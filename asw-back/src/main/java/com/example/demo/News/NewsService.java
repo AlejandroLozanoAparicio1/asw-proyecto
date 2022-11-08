@@ -17,9 +17,8 @@ public class NewsService {
 
     @Autowired
     private NewsRepository newsRepository;
-
     @Autowired
-    private CommentRepository commRepository;
+    private CommentRepository commentRepository;
 
     public List<News> getNewsList() {
         return newsRepository.findAll(Sort.by(Sort.Direction.DESC, "points"));
@@ -47,8 +46,10 @@ public class NewsService {
         return newsRepository.findById(id).get().getComments();
     }
 
-    public void newComment(Long id, Long commentId) {
-        Comment comment = commRepository.findById(commentId).orElse(null);
-        if (comment != null) newsRepository.findById(id).get().addComment(comment);
+    public void newComment(Long id, Comment comment) {
+        commentRepository.save(comment);
+        News news = newsRepository.findById(id).get();
+        news.addComment(comment);
+        newsRepository.save(news);
     }
 }

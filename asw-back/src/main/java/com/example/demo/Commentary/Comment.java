@@ -16,30 +16,25 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "user", referencedColumnName = "username", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user", referencedColumnName = "username", nullable = true)
     private User user;
     @Column
     private String time;
     @Column
     private String body;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "news", referencedColumnName = "itemId", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private News news;
-
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     public Comment() {}
 
-    public Comment(Long id, User user, String time, String body, News news) {
+    public Comment(Long id, User user, String time, String body) {
         this.id = id;
         this.user = user;
         this.time = time;
         this.body = body;
-        this.news = news;
+        //this.news = news;
         this.comments = new ArrayList<Comment>();
     }
 
@@ -81,13 +76,5 @@ public class Comment {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
-    }
-
-    public News getNews() {
-        return news;
-    }
-
-    public void setNews(News news) {
-        this.news = news;
     }
 }

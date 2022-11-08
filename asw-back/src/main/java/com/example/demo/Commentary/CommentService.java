@@ -15,11 +15,12 @@ public class CommentService {
     private CommentRepository commRepository;
 
     public List<Comment> getCommentList() {
-        return commRepository.findAll(Sort.by(Sort.Direction.DESC, "time"));
+        List<Comment> a = commRepository.findAll(Sort.by(Sort.Direction.DESC, "time"));
+        return a;
     }
 
-    public Optional<Comment> getComment(Long id) {
-        return commRepository.findById(id);
+    public Comment getComment(Long id) {
+        return commRepository.findById(id).get();
     }
 
     public void createComment(Comment comment) {
