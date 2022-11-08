@@ -1,9 +1,12 @@
 package com.example.demo.News;
 
+import com.example.demo.Commentary.Comment;
 import com.example.demo.User.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "news")
@@ -31,9 +34,9 @@ public class News {
     @Column
     private String type;
 
-    /*
+
     @OneToMany()
-    private List<Comment> comments = new ArrayList<Comment>();*/
+    private List<Comment> comments = new ArrayList<Comment>();
 
     public News() {
 
@@ -89,7 +92,6 @@ public class News {
         this.datePublished = datePublished;
     }
 
-/*
     public List<Comment> getComments() {
         return comments;
     }
@@ -99,9 +101,8 @@ public class News {
     }
 
     public void addComment(Comment comment) {
-        System.out.println(comment.getTitle());
         this.comments.add(comment);
-    }*/
+    }
 
     public String getLink() {
         return link;

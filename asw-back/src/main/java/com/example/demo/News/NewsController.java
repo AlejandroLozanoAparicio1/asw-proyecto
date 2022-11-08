@@ -22,8 +22,8 @@ public class NewsController {
         return newsService.getNewest();
     }
 
-    @GetMapping("news/get")
-    public Optional<News> getNews(Long id) {
+    @GetMapping("news/{id}")
+    public Optional<News> getNews(@PathVariable Long id) {
         return newsService.getNews(id);
     }
 
@@ -32,14 +32,14 @@ public class NewsController {
         newsService.createNews(news);
     }
 
-    /*
-    @GetMapping("news/get/comments")
-    public List<Comment> getComments(Long id) {
+
+    @GetMapping("news/{id}/comments")
+    public List<Comment> getComments(@PathVariable Long id) {
         return newsService.getComments(id);
     }
 
     @PutMapping ("news/comment/{id}")
     public void addComment(Long id, @PathVariable("id") Long commentId) {
         newsService.newComment(id, commentId);
-    }*/
+    }
 }

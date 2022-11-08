@@ -25,6 +25,4 @@ public class CommentService {
     public void createComment(Comment comment) {
         commRepository.save(comment);
     }
-
-
 }

@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,8 +16,8 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "user", referencedColumnName = "username")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "user", referencedColumnName = "username", nullable = false)
     private User user;
     @Column
     private String time;
@@ -33,13 +34,13 @@ public class Comment {
 
     public Comment() {}
 
-    public Comment(Long id, User user, String time, String body, News news, List<Comment> comments) {
+    public Comment(Long id, User user, String time, String body, News news) {
         this.id = id;
         this.user = user;
         this.time = time;
         this.body = body;
         this.news = news;
-        this.comments = comments;
+        this.comments = new ArrayList<Comment>();
     }
 
     public Long getId() {
@@ -80,5 +81,13 @@ public class Comment {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public News getNews() {
+        return news;
+    }
+
+    public void setNews(News news) {
+        this.news = news;
     }
 }

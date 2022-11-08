@@ -42,7 +42,7 @@ public class NewsService {
         newsRepository.save(news);
     }
 
-    /*
+
     public List<Comment> getComments(Long id) {
         return newsRepository.findById(id).get().getComments();
     }
@@ -50,5 +50,5 @@ public class NewsService {
     public void newComment(Long id, Long commentId) {
         Comment comment = commRepository.findById(commentId).orElse(null);
         if (comment != null) newsRepository.findById(id).get().addComment(comment);
-    }*/
+    }
 }
