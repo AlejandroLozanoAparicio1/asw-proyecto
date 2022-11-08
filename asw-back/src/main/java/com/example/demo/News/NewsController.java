@@ -12,9 +12,14 @@ public class NewsController {
     @Autowired
     NewsService newsService;
 
-    @GetMapping("newslist/get")
+    @GetMapping("news")
     public List<News> getNewsList() {
         return newsService.getNewsList();
+    }
+
+    @GetMapping("newest")
+    public List<News> getNewest() {
+        return newsService.getNewest();
     }
 
     @GetMapping("news/get")
@@ -22,7 +27,7 @@ public class NewsController {
         return newsService.getNews(id);
     }
 
-    @PostMapping("news/post")
+    @PostMapping("submit")
     public void getNews(@RequestBody News news) {
         newsService.createNews(news);
     }

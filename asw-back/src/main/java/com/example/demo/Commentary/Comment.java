@@ -21,8 +21,6 @@ public class Comment {
     @Column
     private String time;
     @Column
-    private String title;
-    @Column
     private String body;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
@@ -35,11 +33,10 @@ public class Comment {
 
     public Comment() {}
 
-    public Comment(Long id, User user, String time, String title, String body, News news, List<Comment> comments) {
+    public Comment(Long id, User user, String time, String body, News news, List<Comment> comments) {
         this.id = id;
         this.user = user;
         this.time = time;
-        this.title = title;
         this.body = body;
         this.news = news;
         this.comments = comments;
@@ -67,14 +64,6 @@ public class Comment {
 
     public void setTime(String time) {
         this.time = time;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getBody() {

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,11 +25,20 @@ public class NewsService {
         return newsRepository.findAll(Sort.by(Sort.Direction.DESC, "points"));
     }
 
+    public List<News> getNewest() {
+        return newsRepository.findAll(Sort.by(Sort.Direction.DESC, "datePublished"));
+    }
+
     public Optional<News> getNews(Long id) {
         return newsRepository.findById(id);
     }
 
     public void createNews(News news) {
+        if (news.getLink() != null) news.setType("url");
+        else news.setType("ask");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String currentDateTime = LocalDateTime.now().format(formatter);
+        news.setDatePublished(currentDateTime);
         newsRepository.save(news);
     }
 
