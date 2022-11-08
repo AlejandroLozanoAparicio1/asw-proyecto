@@ -47,6 +47,9 @@ public class NewsService {
     }
 
     public void newComment(Long id, Comment comment) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String currentDateTime = LocalDateTime.now().format(formatter);
+        comment.setTime(currentDateTime);
         commentRepository.save(comment);
         News news = newsRepository.findById(id).get();
         news.addComment(comment);

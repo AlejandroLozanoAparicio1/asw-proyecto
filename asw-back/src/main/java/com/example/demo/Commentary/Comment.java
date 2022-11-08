@@ -2,6 +2,7 @@ package com.example.demo.Commentary;
 
 import com.example.demo.News.News;
 import com.example.demo.User.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -20,6 +21,7 @@ public class Comment {
     @JoinColumn(name = "user", referencedColumnName = "username", nullable = true)
     private User user;
     @Column
+    @JsonFormat(pattern="dd-MM-yyyy HH:mm:ss")
     private String time;
     @Column
     private String body;
@@ -76,5 +78,9 @@ public class Comment {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public void addComments(Comment comment) {
+        this.comments.add(comment);
     }
 }
