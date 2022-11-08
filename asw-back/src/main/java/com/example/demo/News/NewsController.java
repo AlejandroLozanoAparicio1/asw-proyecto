@@ -1,43 +1,45 @@
 package com.example.demo.News;
 
-import com.example.demo.User.User;
+import com.example.demo.Commentary.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 public class NewsController {
-    //private NewsService newsService = new NewsService();
-
-    /*
-    @GetMapping("getNew")
-    public New getNew(){
-        return newsService.getNew();
-    }
-     */
-
     @Autowired
     NewsService newsService;
 
-
-    @GetMapping("newslist/get")
+    @GetMapping("news")
     public List<News> getNewsList() {
         return newsService.getNewsList();
     }
 
-    @GetMapping("news/get")
-    public Optional<News> getNews(Long id) {
+    @GetMapping("newest")
+    public List<News> getNewest() {
+        return newsService.getNewest();
+    }
+
+    @GetMapping("news/{id}")
+    public Optional<News> getNews(@PathVariable Long id) {
         return newsService.getNews(id);
     }
 
-    @PostMapping("news/post")
+    @PostMapping("submit")
     public void getNews(@RequestBody News news) {
         newsService.createNews(news);
+    }
+
+
+    @GetMapping("news/{id}/comments")
+    public List<Comment> getComments(@PathVariable Long id) {
+        return newsService.getComments(id);
+    }
+
+    @PutMapping ("news/comment/{id}")
+    public void addComment(Long id, @PathVariable("id") Long commentId) {
+        newsService.newComment(id, commentId);
     }
 }
