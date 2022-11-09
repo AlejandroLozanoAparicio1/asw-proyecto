@@ -1,0 +1,52 @@
+#comments {
+    width: 80%;
+    height: auto;
+    margin: 1rem auto;
+    background-color: #F9F7F7;
+    border-radius: 0.35rem;
+}
+
+.comment {
+    width: 100%;
+    padding: 1rem 0.75rem;
+    display: block;
+    border-bottom: #A0A0A0 1px solid;
+}
+
+.last-sub {
+    border-bottom: none;
+}
+/*
+.submission-upper {
+    margin-bottom: 0.5rem;
+}
+
+.submission-lower {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.like-btn {
+    background: url("../images/heart-regular.svg");
+    width: 100%;
+    height: 100%;
+}
+
+.submission-title {
+    font-size: 1.3rem;
+    font-weight: 400;
+    text-decoration: none;
+}
+
+.submission-page {
+    font-size: 1rem;
+    text-decoration: none;
+    color: #808080;
+}
+
+.submission-info {
+    font-size: 0.8rem;
+    text-decoration: none;
+    color: #808080;
+}*/
