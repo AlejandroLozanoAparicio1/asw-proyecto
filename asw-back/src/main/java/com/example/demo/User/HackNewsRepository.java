@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface HackNewsRepository extends JpaRepository<User, String> {
+    public User findUserByUsername(String username);
 }
