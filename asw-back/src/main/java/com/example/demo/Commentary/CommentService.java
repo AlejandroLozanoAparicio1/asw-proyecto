@@ -48,7 +48,7 @@ public class CommentService {
         reply.setTime(currentDateTime);
 
         Comment comment = commentRepository.findById(id).get();
-        reply.setParent(comment);
+        reply.setParent(comment.getId());
 
         commentRepository.save(reply);
         comment.addComments(reply);
