@@ -2,6 +2,7 @@ package com.example.demo.Commentary;
 
 import com.example.demo.News.News;
 import com.example.demo.User.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -16,30 +17,30 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "user", referencedColumnName = "username", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user", referencedColumnName = "username", nullable = true)
     private User user;
     @Column
+    @JsonFormat(pattern="dd-MM-yyyy HH:mm:ss")
     private String time;
     @Column
     private String body;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "news", referencedColumnName = "itemId", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private News news;
-
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "parent", referencedColumnName = "id", nullable = true)
+    private Comment parent;
+
     public Comment() {}
 
-    public Comment(Long id, User user, String time, String body, News news) {
+    public Comment(Long id, User user, String time, String body) {
         this.id = id;
         this.user = user;
         this.time = time;
         this.body = body;
-        this.news = news;
+        //this.news = news;
         this.comments = new ArrayList<Comment>();
     }
 
@@ -83,11 +84,15 @@ public class Comment {
         this.comments = comments;
     }
 
-    public News getNews() {
-        return news;
+    public void addComments(Comment comment) {
+        this.comments.add(comment);
     }
 
-    public void setNews(News news) {
-        this.news = news;
+    public Comment getParent() {
+        return parent;
+    }
+
+    public void setParent(Comment parent) {
+        this.parent = parent;
     }
 }

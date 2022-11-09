@@ -22,6 +22,13 @@ public class User {
     public User() {
     }
 
+    public User(String username, String created, Integer karma, String about) {
+        this.username = username;
+        this.created = created;
+        this.karma = karma;
+        this.about = about;
+    }
+
     public String getUsername() {
         return username;
     }

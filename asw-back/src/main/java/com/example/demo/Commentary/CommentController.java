@@ -11,19 +11,23 @@ public class CommentController {
     @Autowired
     CommentService commentService;
 
-
     @GetMapping("commentlist/get")
     public List<Comment> getCommentList() {
         return commentService.getCommentList();
     }
 
     @GetMapping("comment/{id}")
-    public Optional<Comment> getComment(@PathVariable Long id) {
+    public Comment getComment(@PathVariable("id") Long id) {
         return commentService.getComment(id);
     }
 
-    @PostMapping("comment/post")
-    public void getComment(@RequestBody Comment comment) {
-        commentService.createComment(comment);
+    @GetMapping("comment/user/{id}")
+    public List<Comment> getUserComments(@PathVariable("id") String id) {
+        return commentService.getUserComments(id);
+    }
+
+    @PutMapping("news/{id}/reply")
+    public void addComment(@PathVariable("id") Long id, @RequestBody Comment comment) {
+        commentService.newComment(id, comment);
     }
 }
