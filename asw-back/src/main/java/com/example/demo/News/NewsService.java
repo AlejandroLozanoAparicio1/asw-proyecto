@@ -2,12 +2,14 @@ package com.example.demo.News;
 
 import com.example.demo.Commentary.Comment;
 import com.example.demo.Commentary.CommentRepository;
+import com.example.demo.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +40,7 @@ public class NewsService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String currentDateTime = LocalDateTime.now().format(formatter);
         news.setDatePublished(currentDateTime);
+        news.setPoints(0);
         newsRepository.save(news);
     }
 
@@ -54,5 +57,35 @@ public class NewsService {
         News news = newsRepository.findById(id).get();
         news.addComment(comment);
         newsRepository.save(news);
+    }
+
+    public void like(Long id, User user) {
+        News news = newsRepository.findById(id).get();
+        news.like(user);
+        newsRepository.save(news);
+    }
+
+    public List<News> getNewsAsk() {
+        List<News> newsList = newsRepository.findAll();
+        List<News> res = new ArrayList<>();
+
+        for (int i = 0; i < newsList.size(); ++i) {
+            if (newsList.get(i).getType().equals("ask"))
+                res.add(newsList.get(i));
+        }
+
+        return res;
+    }
+
+    public List<News> getNewsShow() {
+        List<News> newsList = newsRepository.findAll();
+        List<News> res = new ArrayList<>();
+
+        for (int i = 0; i < newsList.size(); ++i) {
+            if (newsList.get(i).getType().equals("url"))
+                res.add(newsList.get(i));
+        }
+
+        return res;
     }
 }

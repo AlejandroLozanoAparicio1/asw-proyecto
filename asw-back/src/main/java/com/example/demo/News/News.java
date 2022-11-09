@@ -33,21 +33,20 @@ public class News {
     private String text;
     @Column
     private String type;
-
-
     @OneToMany()
     private List<Comment> comments = new ArrayList<Comment>();
+    @ManyToMany()
+    private List<User> likedBy = new ArrayList<User>();
 
     public News() {
 
     }
 
-    public News(String title, String page, Integer points, User publisher, /*List<Comment> comments,*/ String link, String text) {
+    public News(String title, String page, User publisher, String link, String text) {
         this.title = title;
         this.page_ = page;
-        this.points = points;
+        this.points = 0;
         this.username = publisher;
-        //this.comments = comments;
         this.link = link;
         this.text = text;
     }
@@ -135,5 +134,31 @@ public class News {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public List<User> getLikedBy() {
+        return likedBy;
+    }
+
+    public void setLikedBy(List<User> likedBy) {
+        this.likedBy = likedBy;
+    }
+
+    public Integer getLikes() {
+        return likedBy.size();
+    }
+
+    public void like(User user) {
+        int pos = -1;
+        for (int i = 0; i < this.likedBy.size() && pos == -1; ++i) {
+            if (this.likedBy.get(i).getUsername() == username.getUsername())
+                pos = i;
+        }
+        if (pos == -1) {
+            this.likedBy.add(user);
+        }
+        else {
+            this.likedBy.remove(pos);
+        }
     }
 }

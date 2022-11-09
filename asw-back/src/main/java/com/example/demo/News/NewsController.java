@@ -1,6 +1,7 @@
 package com.example.demo.News;
 
 import com.example.demo.Commentary.Comment;
+import com.example.demo.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,16 @@ public class NewsController {
     @GetMapping("news")
     public List<News> getNewsList() {
         return newsService.getNewsList();
+    }
+
+    @GetMapping("ask")
+    public List<News> getNewsAsk() {
+        return newsService.getNewsAsk();
+    }
+
+    @GetMapping("show")
+    public List<News> getNewsShow() {
+        return newsService.getNewsShow();
     }
 
     @GetMapping("newest")
@@ -42,5 +53,10 @@ public class NewsController {
     @PutMapping("news/{id}/newcomment")
     public void addComment(@PathVariable("id") Long id, @RequestBody Comment comment) {
         newsService.newComment(id, comment);
+    }
+
+    @PutMapping("news/{id}/like")
+    public void like(@PathVariable("id") Long id, @RequestBody User user) {
+        newsService.like(id, user);
     }
 }

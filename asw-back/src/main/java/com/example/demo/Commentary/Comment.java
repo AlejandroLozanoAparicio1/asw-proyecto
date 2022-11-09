@@ -29,6 +29,10 @@ public class Comment {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "parent", referencedColumnName = "id", nullable = true)
+    private Comment parent;
+
     public Comment() {}
 
     public Comment(Long id, User user, String time, String body) {
@@ -82,5 +86,13 @@ public class Comment {
 
     public void addComments(Comment comment) {
         this.comments.add(comment);
+    }
+
+    public Comment getParent() {
+        return parent;
+    }
+
+    public void setParent(Comment parent) {
+        this.parent = parent;
     }
 }
