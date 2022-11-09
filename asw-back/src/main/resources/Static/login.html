@@ -1,0 +1,78 @@
+<head>
+    <link rel="stylesheet" href="login.css">
+    <script src="login.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <meta name="google-signin-client_id" content="924920240682-32aaubm7u3ac390p3kroe29o1hpe34ef.apps.googleusercontent.com">
+
+</head>
+<body>
+    <article class = "formUserInfo">
+        <div class = row>
+            <div class = "component">
+                <label class = "tags">User</label>
+                <input type="text" id="username" name="name" size="10">
+            </div>
+            <div class = "component">
+                <label class = "tags">Created</label>
+                <input type="text" id="created" name="name" size="10">
+            </div>
+        </div>
+        <div class = row>
+            <div class = "component">
+                <label class = "tags">Karma</label>
+                <input type="text" id="karma" name="name" size="10">
+            </div>
+            <div class = "component">
+                <label class = "tags">Max Visit</label>
+                <input type="text" id="maxvisit" name="name" size="10">
+            </div>
+        </div>
+        <div class = row>
+            <div class = "component">
+                <label class = "tags">Min away</label>
+                <input type="text" id="minaway" name="name" size="10">
+            </div>
+            <div class = "component">
+                <label class = "tags">Delay</label>
+                <input type="text" id="delay" name="name" size="10">
+            </div>
+        </div>
+        <div class = row>
+            <div class = "component">
+                <label class = "tags">About</label>
+                <input type="text" id="about" name="name" size="39" width="40">
+            </div>
+        </div>
+        <div class = row>
+            <input type="checkbox" id="showdead">
+            <label class = "checkbox">Show Dead</label>
+            <input type="checkbox" id="noprocrast" name="name">
+            <label class = "checkbox">No Pro Crast</label>
+        </div>
+        <div class = row>
+                <button type="button" onclick="getInfoUser()">Update</button>
+        </div>
+        <div class = row>
+            <ul>
+               <li>
+                   <a href ="">Submissions</a>
+               </li>
+                <li>
+                    <a href ="">Comments</a>
+                </li>
+                <li>
+                    <a href ="">Hidden</a>
+                </li>
+                <li>
+                    <a href ="">Favorite</a>
+                </li>
+            </ul>
+        </div>
+    </article>
+    <div id="g_id_onload"
+         data-client_id="924920240682-32aaubm7u3ac390p3kroe29o1hpe34ef.apps.googleusercontent.com"
+         data-callback="handleCredentialResponse">
+    </div>
+    <div class="g_id_signin" data-type="standard"></div>
+    <button type = "button" class = "btn btn-danger" onclick = "signOut()">Sign Out</button>
+</body>
