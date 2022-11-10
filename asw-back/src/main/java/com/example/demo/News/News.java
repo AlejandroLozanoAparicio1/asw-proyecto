@@ -1,8 +1,12 @@
 package com.example.demo.News;
 
+import com.example.demo.Commentary.Comment;
 import com.example.demo.User.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "news")
@@ -11,36 +15,40 @@ public class News {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column
     private Long itemId;
-    @Column
+    @Column(unique = true)
     private String title;
     @Column
     private String page_;
     @Column
     private Integer points;
-
     @OneToOne
     @JoinColumn(name = "username", referencedColumnName = "username")
     private User username;
     @Column
-    private String date_published;
-    //@Column
-    //private List<Commentary> comments;
-    @Column
+    @JsonFormat(pattern="dd-MM-yyyy HH:mm:ss")
+    private String datePublished;
+    @Column(unique = true)
     private String link;
+    @Column
+    private String text;
+    @Column
+    private String type;
+    @OneToMany()
+    private List<Comment> comments = new ArrayList<Comment>();
+    @ManyToMany()
+    private List<User> likedBy = new ArrayList<User>();
 
     public News() {
 
     }
 
-    public News(String title, String page, Integer points, User publisher, String datePublished, /*List<Commentary> commentaries,*/
-         String link) {
+    public News(String title, String page, User publisher, String link, String text) {
         this.title = title;
         this.page_ = page;
-        this.points = points;
+        this.points = 0;
         this.username = publisher;
-        this.date_published = datePublished;
-        //this.comments = commentaries;
         this.link = link;
+        this.text = text;
     }
 
     public String getTitle() {
@@ -75,23 +83,26 @@ public class News {
         this.username = publisher;
     }
 
-    public String getDate_published() {
-        return date_published;
+    public String getDatePublished() {
+        return datePublished;
     }
 
-    public void setDate_published(String datePublished) {
-        this.date_published = datePublished;
+    public void setDatePublished(String datePublished) {
+        this.datePublished = datePublished;
     }
 
-    /*
-    public List<Commentary> getComments() {
+    public List<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(List<Commentary> comments) {
+    public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
-    */
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+    }
+
     public String getLink() {
         return link;
     }
@@ -106,5 +117,48 @@ public class News {
 
     public void setItemId(Long itemId) {
         this.itemId = itemId;
+    }
+
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public List<User> getLikedBy() {
+        return likedBy;
+    }
+
+    public void setLikedBy(List<User> likedBy) {
+        this.likedBy = likedBy;
+    }
+
+    public Integer getLikes() {
+        return likedBy.size();
+    }
+
+    public void like(User user) {
+        int pos = -1;
+        for (int i = 0; i < this.likedBy.size() && pos == -1; ++i) {
+            if (this.likedBy.get(i).getUsername() == username.getUsername())
+                pos = i;
+        }
+        if (pos == -1) {
+            this.likedBy.add(user);
+        }
+        else {
+            this.likedBy.remove(pos);
+        }
     }
 }
