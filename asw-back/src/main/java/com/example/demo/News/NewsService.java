@@ -34,14 +34,21 @@ public class NewsService {
         return newsRepository.findById(id);
     }
 
-    public void createNews(News news) {
+    public String createNews(News news) {
         if (news.getLink() != null) news.setType("url");
         else news.setType("ask");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String currentDateTime = LocalDateTime.now().format(formatter);
         news.setDatePublished(currentDateTime);
         news.setPoints(0);
-        newsRepository.save(news);
+        try {
+            newsRepository.save(news);
+        }
+        catch (Exception e) {
+            return "{'data': 1}";
+
+        }
+        return "{'data': 0}";
     }
 
 
