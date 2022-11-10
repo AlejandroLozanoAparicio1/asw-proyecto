@@ -29,6 +29,9 @@ public class Comment {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Reply> replies;
 
+    @ManyToMany()
+    private List<User> likedBy = new ArrayList<User>();
+
     public Comment() {}
 
     public Comment(Long id, User user, String time, String body) {
@@ -81,6 +84,28 @@ public class Comment {
 
     public void addComments(Reply reply) {
         this.replies.add(reply);
+    }
+
+    public List<User> getLikedBy() {
+        return likedBy;
+    }
+
+    public void setLikedBy(List<User> likedBy) {
+        this.likedBy = likedBy;
+    }
+
+    public void like(User user) {
+        int pos = -1;
+        for (int i = 0; i < this.likedBy.size() && pos == -1; ++i) {
+            if (this.likedBy.get(i).getUsername().equals(user.getUsername()))
+                pos = i;
+        }
+        if (pos == -1) {
+            this.likedBy.add(user);
+        }
+        else {
+            this.likedBy.remove(pos);
+        }
     }
 
 }

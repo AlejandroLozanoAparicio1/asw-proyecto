@@ -151,7 +151,7 @@ public class News {
     public void like(User user) {
         int pos = -1;
         for (int i = 0; i < this.likedBy.size() && pos == -1; ++i) {
-            if (this.likedBy.get(i).getUsername() == username.getUsername())
+            if (this.likedBy.get(i).getUsername().equals(user.getUsername()))
                 pos = i;
         }
         if (pos == -1) {
