@@ -1,5 +1,6 @@
 package com.example.demo.Commentary;
 
+import com.example.demo.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,5 +34,10 @@ public class CommentController {
     @PutMapping("comment")
     public void addComment( @RequestBody Comment comment) {
         commentService.newComment(comment);
+    }
+
+    @PutMapping("comment/{id}/like")
+    public void like(@PathVariable("id") Long id, @RequestBody User user) {
+        commentService.like(id, user);
     }
 }

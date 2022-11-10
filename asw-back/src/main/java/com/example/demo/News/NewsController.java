@@ -41,7 +41,7 @@ public class NewsController {
     }
 
     @PostMapping("submit")
-    public String createNews(@RequestBody News news) {
+    public Long createNews(@RequestBody News news) {
         /*response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(json);*/
@@ -63,4 +63,10 @@ public class NewsController {
     public void like(@PathVariable("id") Long id, @RequestBody User user) {
         newsService.like(id, user);
     }
+
+    @GetMapping("news/user")
+    public List<News> getNewsByUsername(@RequestParam String username) {
+        return newsService.getNewsByUsername(username);
+    }
+
 }

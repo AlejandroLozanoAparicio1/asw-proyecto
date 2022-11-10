@@ -41,4 +41,9 @@ public class UserService {
                 hackNewsRepository.save(newUser);
             }
     }
+
+    public User modifyUser(User user){
+        return hackNewsRepository.save(user);
+    }
+
 }
