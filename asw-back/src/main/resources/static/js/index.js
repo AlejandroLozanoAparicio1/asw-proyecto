@@ -1,5 +1,4 @@
 const news = document.getElementById("main-container");
-
 function setHtml(htmlUri){
     var xhr = new XMLHttpRequest();
     xhr.open('GET',htmlUri, true);
@@ -26,16 +25,11 @@ async function getProfile() {
 
 async function getSubmit(){
     await setHtml('submit.html')
-    /*
     var script = document.createElement('script');
-    script.setAttribute("src", "js/profile.js")
+    script.setAttribute("src", "js/submit.js")
     document.head.appendChild(script);
-     */
 }
 
-async function getComments(){
-
-}
 
 const getNews = async (url) => {
     const response = await fetch("http://localhost:8081/" + url);
@@ -76,6 +70,14 @@ const getNews = async (url) => {
     }
     news.innerHTML = html;
 }
+
+function checkLogged(){
+    let username = localStorage.getItem("username");
+    if(username !== null){
+        changeButton(username);
+    }
+}
 window.onload = function (){
+    checkLogged();
     getNews("news");
 }
