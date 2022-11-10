@@ -1,6 +1,7 @@
 package com.example.demo.Commentary;
 
 import com.example.demo.News.News;
+import com.example.demo.Reply.Reply;
 import com.example.demo.User.HackNewsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -26,8 +27,25 @@ public class CommentService {
         return a;
     }
 
-    public Comment getComment(Long id) {
-        return commentRepository.findById(id).get();
+    public CommentDTO getComment(Long id) {
+        Comment comment = commentRepository.findById(id).get();
+        CommentDTO commentDTO = new CommentDTO(comment.getId(), comment.getUser(), comment.getTime(), comment.getBody(), new ArrayList<CommentDTO>());
+        List<Reply> replies = comment.getReplies();
+        getReplies(comment.getReplies(), commentDTO.getReplies());
+        return commentDTO;
+    }
+
+    private void getReplies(List<Reply> replies, List<CommentDTO> comments){
+        if(replies.isEmpty())
+            return;
+        Comment comment;
+        for(Reply reply : replies) {
+            comment = commentRepository.findById(reply.getComenntaryId()).get();
+            CommentDTO commentDTO = new CommentDTO(comment.getId(), comment.getUser(), comment.getTime(), comment.getBody(), new ArrayList<CommentDTO>());
+            comments.add(commentDTO);
+            getReplies(comment.getReplies(), commentDTO.getReplies());
+        }
+
     }
 
     public List<Comment> getUserComments(String id) {
@@ -42,16 +60,22 @@ public class CommentService {
     }
 
 
-    public void newComment(Long id, Comment reply) {
+    public void newComment(Comment comment) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String currentDateTime = LocalDateTime.now().format(formatter);
+        comment.setTime(currentDateTime);
+        commentRepository.save(comment);
+    }
+
+    public void addReply(Long id, Comment reply){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String currentDateTime = LocalDateTime.now().format(formatter);
         reply.setTime(currentDateTime);
 
         Comment comment = commentRepository.findById(id).get();
-        reply.setParent(comment.getId());
 
         commentRepository.save(reply);
-        comment.addComments(reply);
+        comment.addComments(new Reply(reply.getId()));
         commentRepository.save(comment);
     }
 }

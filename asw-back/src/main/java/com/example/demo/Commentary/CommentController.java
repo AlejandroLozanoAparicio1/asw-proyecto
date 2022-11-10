@@ -17,7 +17,7 @@ public class CommentController {
     }
 
     @GetMapping("comment/{id}")
-    public Comment getComment(@PathVariable("id") Long id) {
+    public CommentDTO getComment(@PathVariable("id") Long id) {
         return commentService.getComment(id);
     }
 
@@ -27,7 +27,11 @@ public class CommentController {
     }
 
     @PutMapping("news/{id}/reply")
-    public void addComment(@PathVariable("id") Long id, @RequestBody Comment comment) {
-        commentService.newComment(id, comment);
+    public void addReply(@PathVariable("id") Long id, @RequestBody Comment comment) {
+        commentService.addReply(id, comment);
+    }
+    @PutMapping("comment")
+    public void addComment( @RequestBody Comment comment) {
+        commentService.newComment(comment);
     }
 }
