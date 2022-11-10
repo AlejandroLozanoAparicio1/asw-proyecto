@@ -1,4 +1,25 @@
 const news = document.getElementById("news-container");
+let newComment = "";
+
+const changeNewComment = (NewComment) => {
+    newComment = NewComment;
+}
+
+const addComment = async (id) => {
+    let jsonSubmit = {
+        user: {
+            username: "alex"
+        },
+        body: newComment
+    };
+    const response = await fetch("http://localhost:8081/news/" + id + "/newcomment", {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(jsonSubmit)
+    });
+}
 
 const getNewsView = async (id) => {
     const response = await fetch("http://localhost:8081/news/" + id);
@@ -19,6 +40,12 @@ const getNewsView = async (id) => {
                    <div class="news-body">
                         ${json.text}
                    </div>
+                   <div class="comment-form">
+                        <form>
+                            <input type="text" onchange="changeNewComment(value)" />
+                            <input type="button" value="Add comment" class="add-comm-btn"  onclick="addComment(${id})"/>
+                        </form>
+                   </div>
                    <div class="news-comments">`;
     } else {
         myhtml += `
@@ -32,6 +59,12 @@ const getNewsView = async (id) => {
                                 </div>
                                 <div class="news-body">
                                     ${json.text}
+                               </div>
+                               <div class="comment-form">
+                                    <form>
+                                        <input type="text" />
+                                        <input type="button" value="Add comment" class="submit-btn" />
+                                    </form>
                                </div>
                                <div class="news-comments">`;
     }

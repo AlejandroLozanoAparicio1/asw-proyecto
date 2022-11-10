@@ -51,3 +51,14 @@
     text-decoration: none;
     margin-bottom: 3rem;
 }
+
+.add-comm-btn {
+    width: fit-content;
+    padding: 0.25rem 0.75rem;
+    margin: 2rem 0;
+    display: block;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: #112D4E;
+    color: white;
+}
