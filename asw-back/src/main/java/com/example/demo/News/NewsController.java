@@ -41,8 +41,12 @@ public class NewsController {
     }
 
     @PostMapping("submit")
-    public void getNews(@RequestBody News news) {
-        newsService.createNews(news);
+    public String createNews(@RequestBody News news) {
+        /*response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json);*/
+        return newsService.createNews(news);
+
     }
 
     @GetMapping("news/{id}/comments")
