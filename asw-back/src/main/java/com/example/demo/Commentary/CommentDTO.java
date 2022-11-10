@@ -10,7 +10,7 @@ public class CommentDTO {
     private User user;
     private String time;
     private String body;
-
+    private List<CommentDTO> replies;
     public Long getId() {
         return id;
     }
@@ -58,6 +58,4 @@ public class CommentDTO {
         this.body = body;
         this.replies = replies;
     }
-
-    private List<CommentDTO> replies;
 }
