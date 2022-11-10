@@ -1,3 +1,13 @@
+async function changeButton(username){
+    let user = await fetch("http://localhost:8081/user?username=" + username);
+    let karma = await user.json().karma;
+    let login = document.getElementById("login")
+    login.innerHTML =
+        `<ul class="nav-log">
+            <li class="nav-item"><a onclick="getProfile()" id="me">${username}</a><span id="karma">(${karma})</span></li>
+            <li class="nav-item"><a id="logout" onClick= "signOut()">logout</a></li>
+        </ul>`
+}
 function signOut() {
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
@@ -14,13 +24,10 @@ function parseJwt (token) {
 }
 window.handleCredentialResponse = async (response) => {
     responsePayload = parseJwt(response.credential);
-    await fetch("http://localhost:8081/login?username=" + responsePayload.given_name, {method:'POST'});
-    localStorage.setItem("username", "username")
+    username = responsePayload.name.replaceAll(/\s/g,'');
+    console.log(username)
+    await fetch("http://localhost:8081/login?username=" + username, {method:'POST'});
+    localStorage.setItem("username", username)
     console.log(response.credential)
-    console.log("ID: " + responsePayload.sub);
-    console.log('Full Name: ' + responsePayload.name);
-    console.log('Given Name: ' + responsePayload.given_name);
-    console.log('Family Name: ' + responsePayload.family_name);
-    console.log("Image URL: " + responsePayload.picture);
-    console.log("Email: " + responsePayload.email);
+    changeButton(username);
 }
