@@ -1,12 +1,5 @@
-<head>
-    <link rel="stylesheet" href="css/login.css">
-    <script src="js/profile.js"></script>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <meta name="google-signin-client_id" content="924920240682-32aaubm7u3ac390p3kroe29o1hpe34ef.apps.googleusercontent.com">
-
-</head>
-<body>
-    <article class = "formUserInfo">
+<link rel="stylesheet" href="css/login.css">
+<article class = "formUserInfo">
         <div class = row>
             <div class = "component">
                 <label class = "tags">User</label>
@@ -50,29 +43,22 @@
             <label class = "checkbox">No Pro Crast</label>
         </div>
         <div class = row>
-                <button type="button" onclick="getInfoUser()">Update</button>
+                <button type="button" onclick="getInfoUser()" class = "letraH">Update</button>
         </div>
         <div class = row>
-            <ul>
-               <li>
-                   <a href ="">Submissions</a>
+            <ul class = ulc>
+               <li class = lic>
+                   <a href ="" class = "letraH">Submissions</a>
                </li>
-                <li>
-                    <a href ="">Comments</a>
+                <li class = lic>
+                    <a href ="" class = "letraH">Comments</a>
                 </li>
-                <li>
-                    <a href ="">Hidden</a>
+                <li class = lic>
+                    <a href ="" class = "letraH">Hidden</a>
                 </li>
-                <li>
-                    <a href ="">Favorite</a>
+                <li class = lic>
+                    <a href ="" class = "letraH">Favorite</a>
                 </li>
             </ul>
         </div>
     </article>
-    <div id="g_id_onload"
-         data-client_id="924920240682-32aaubm7u3ac390p3kroe29o1hpe34ef.apps.googleusercontent.com"
-         data-callback="handleCredentialResponse">
-    </div>
-    <div class="g_id_signin" data-type="standard"></div>
-    <button type = "button" class = "btn btn-danger" onclick = "signOut()">Sign Out</button>
-</body>

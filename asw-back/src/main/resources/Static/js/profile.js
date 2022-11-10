@@ -1,4 +1,4 @@
-
+console.log("nonono")
 async function getUserVariables(username){
     const response = await fetch("http://localhost:8081/user?username="+username);
     return await response.json();
@@ -22,6 +22,7 @@ function getInfoUser(){
 
 }
 async function setUserInfo() {
+    console.log("sisisi")
     let username = localStorage.getItem("username")
     let data = await getUserVariables(username)
     document.getElementById("username").value = data.username
@@ -31,10 +32,8 @@ async function setUserInfo() {
     document.getElementById("minaway").value = data.minaway
     document.getElementById("delay").value = data.delay
     document.getElementById("about").value = data.about
-    if(data.showdead == 0) document.getElementById("showdead").checked = true
-    if(data.noprocrast == 0) document.getElementById("noprocrast").checked = true
+    if(data.showdead == 1) document.getElementById("showdead").checked = true
+    if(data.noprocrast == 1) document.getElementById("noprocrast").checked = true
 }
 
-window.onload = async function WindowLoad(event) {
-    setUserInfo()
-}
+setUserInfo()

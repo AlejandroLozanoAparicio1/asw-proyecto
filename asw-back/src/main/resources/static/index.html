@@ -5,6 +5,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="icon" href="images/logo.jpg">
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <meta name="google-signin-client_id" content="924920240682-32aaubm7u3ac390p3kroe29o1hpe34ef.apps.googleusercontent.com">
+    <script src = "js/login.js"></script>
 </head>
 <body>
 <div class="main-page">
@@ -12,20 +15,21 @@
         <ul class="nav-links">
             <li class="nav-item"><a id="hacker-news" href="">Hacker News</a></li>
             <li class="nav-item"><a onclick="getNews('newest')">new</a></li>
-            <li class="nav-item"><a href="threads.html">threads</a></li>
+            <li class="nav-item"><a onclick="getThreads('threads')">threads</a></li>
+            <li class="nav-item"><a onclick="getComments()">comments</a></li>
             <li class="nav-item"><a onclick="getNews('ask')">ask</a></li>
             <li class="nav-item"><a onclick="getNews('show')">show</a></li>
-            <li class="nav-item"><a href="submit.html">submit</a></li>
+            <li class="nav-item"><a onclick="getSubmit()">submit</a></li>
         </ul>
-        <ul  class="nav-log">
-            <li class="nav-item"><a id="me" href="user?id=yyyyxxxx">yyyyxxxx</a><span id="karma">(1)</span></li>
-            <li class="nav-item"><a id="logout" href="logout?auth=260b9537da922b5c000c84056efd68a205ad0209&amp;goto=news">logout</a></li>
+        <ul class="nav-log" id = "login">
+            <div id="g_id_onload"
+                 data-client_id="924920240682-32aaubm7u3ac390p3kroe29o1hpe34ef.apps.googleusercontent.com"
+                 data-callback="handleCredentialResponse">
+            </div>
+            <li class="nav-item" id = "me"><div class="g_id_signin" data-type="standard"></div></li>
         </ul>
     </div>
-    <div id="news-container">
-        <ul id="news">
-
-        </ul>
+    <div id="main-container">
     </div>
 </div>
 
