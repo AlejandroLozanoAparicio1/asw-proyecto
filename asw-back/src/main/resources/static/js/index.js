@@ -1,18 +1,54 @@
+const news = document.getElementById("main-container");
 
+function setHtml(htmlUri){
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET',htmlUri, true);
+    xhr.onreadystatechange= function() {
+        if (this.readyState!==4) return;
+        if (this.status!==200) return; // or whatever error handling you want
+        news.innerHTML = this.responseText;
+    };
+    xhr.send();
+}
+async function getThreads() {
+    await setHtml('threads.html')
+    var script = document.createElement('script');
+    script.setAttribute("src", "js/threads.js")
+    document.head.appendChild(script);
+}
 
-const news = document.getElementById("news");
+async function getProfile() {
+    await setHtml('login.html')
+    var script = document.createElement('script');
+    script.setAttribute("src", "js/profile.js")
+    document.head.appendChild(script);
+}
+
+async function getSubmit(){
+    await setHtml('submit.html')
+    /*
+    var script = document.createElement('script');
+    script.setAttribute("src", "js/profile.js")
+    document.head.appendChild(script);
+     */
+}
+
+async function getComments(){
+
+}
 
 const getNews = async (url) => {
     const response = await fetch("http://localhost:8081/" + url);
     const json = await response.json();
-    news.innerHTML = "";
+    let html = `<ul id="news">`;
+    news.innerHTML = ""
     for (let i = 0; i < json.length; i++) {
         const link = json[i].type == "ask" ? "http://localhost:8081/news/" + json[i].itemId : `${json[i].link}`;
         let cssclass = "submission";
         if (i == json.length - 1) cssclass = "submission last-sub"
         if (json[i].type == "url")
         {
-            news.innerHTML += `<li class="${cssclass}">
+            html += `<li class="${cssclass}">
                                 <div class="submission-upper">
                                     <span class="like-btn"></span>
                                     <a class="submission-title" href="${link}">${json[i].title}</a>
@@ -25,7 +61,7 @@ const getNews = async (url) => {
                            </li>`;
         }
         else {
-            news.innerHTML += `<li class="${cssclass}">
+            html += `<li class="${cssclass}">
                                 <div class="submission-upper">
                                     <span class="like-btn"></span>
                                     <a class="submission-title" href="${link}">${json[i].title}</a>
@@ -38,6 +74,8 @@ const getNews = async (url) => {
                            </li>`;
         }
     }
+    news.innerHTML = html;
 }
-
-getNews("news");
+window.onload = function (){
+    getNews("news");
+}
