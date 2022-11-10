@@ -1,6 +1,6 @@
 package com.example.demo.Commentary;
 
-import com.example.demo.News.News;
+import com.example.demo.Reply.Reply;
 import com.example.demo.User.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.OnDelete;
@@ -27,13 +27,7 @@ public class Comment {
     private String body;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Comment> comments;
-
-    /*
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "parent", referencedColumnName = "id", nullable = true)*/
-    @Column
-    private Long parent;
+    private List<Reply> replies;
 
     public Comment() {}
 
@@ -42,8 +36,7 @@ public class Comment {
         this.user = user;
         this.time = time;
         this.body = body;
-        //this.news = news;
-        this.comments = new ArrayList<Comment>();
+        this.replies = new ArrayList<Reply>();
     }
 
     public Long getId() {
@@ -78,23 +71,16 @@ public class Comment {
         this.body = body;
     }
 
-    public List<Comment> getComments() {
-        return this.comments;
+    public List<Reply> getReplies() {
+        return this.replies;
     }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
+    public void setComments(List<Reply> comments) {
+        this.replies = comments;
     }
 
-    public void addComments(Comment comment) {
-        this.comments.add(comment);
+    public void addComments(Reply reply) {
+        this.replies.add(reply);
     }
 
-    public Long getParent() {
-        return parent;
-    }
-
-    public void setParent(Long parent) {
-        this.parent = parent;
-    }
 }

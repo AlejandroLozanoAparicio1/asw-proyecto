@@ -32,7 +32,7 @@ public class UserService {
     }
     public void insertUser(String username){
             User user = hackNewsRepository.findUserByUsername(username);
-            if(user.equals(null)){
+            if(user == null){
                 ZoneId defaultZoneId = ZoneId.systemDefault();
                 Date currentDate = Date.from(LocalDate.now().atStartOfDay(defaultZoneId).toInstant());
                 User newUser = new User(
