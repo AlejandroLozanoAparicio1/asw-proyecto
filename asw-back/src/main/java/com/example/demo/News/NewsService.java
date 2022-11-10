@@ -3,6 +3,7 @@ package com.example.demo.News;
 import com.example.demo.Commentary.Comment;
 import com.example.demo.Commentary.CommentRepository;
 import com.example.demo.User.User;
+import com.example.demo.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,11 @@ import java.util.Optional;
 
 @Service
 public class NewsService {
-    NewsService() {}
+    NewsService(UserService userService) {
+        this.userService = userService;
+    }
 
+    private final UserService userService;
     @Autowired
     private NewsRepository newsRepository;
     @Autowired
@@ -34,21 +38,23 @@ public class NewsService {
         return newsRepository.findById(id);
     }
 
-    public String createNews(News news) {
+    public Long createNews(News news) {
         if (news.getLink() != null) news.setType("url");
         else news.setType("ask");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String currentDateTime = LocalDateTime.now().format(formatter);
         news.setDatePublished(currentDateTime);
         news.setPoints(0);
+        User user = userService.getUser(news.getUsername().getUsername());
+        news.setUsername(user);
         try {
             newsRepository.save(news);
         }
         catch (Exception e) {
-            return "{'data': 1}";
-
+            return (long)-1;
         }
-        return "{'data': 0}";
+        return news.getItemId();
+
     }
 
 
@@ -94,5 +100,9 @@ public class NewsService {
         }
 
         return res;
+    }
+
+    public List<News> getNewsByUsername(String username) {
+        return newsRepository.findAllByUsername(username);
     }
 }

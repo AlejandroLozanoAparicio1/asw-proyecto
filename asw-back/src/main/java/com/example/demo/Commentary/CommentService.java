@@ -80,6 +80,7 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
+
     public void like(Long id, User user) {
         Comment comment = commentRepository.findById(id).get();
         User us = userRepository.findUserByUsername(user.getUsername());

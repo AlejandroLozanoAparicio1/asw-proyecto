@@ -28,6 +28,11 @@ public class UserController {
         return userService.getUser(username);
     }
 
+    @PostMapping("userk")
+    public User setUser(@RequestBody User user){
+        return userService.modifyUser(user);
+    }
+
     @PostMapping("login")
     public void registerUser(@RequestParam String username){
         userService.insertUser(username);
