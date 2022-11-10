@@ -10,12 +10,13 @@ const getUserComments = async () => {
         if (i == json.length - 1) cssclass = "comment last-sub";
             commentsection.innerHTML += `<li class="${cssclass}">
                                         <div class="comment-info">
-                                            <p class="comment-points">0 points ${json[i].id}</p>
-                                            <p class="comment-user"> by ${json[i].user.username}</p>
-                                            <p class="comment-date"> at ${json[i].time}</p>
+                                            <span class="ini-comment"></span>
+                                            <p class="comment-points">0 points </p>
+                                            <p class="comment-user"> by <span>${json[i].user.username}</span> </p>
+                                            <p class="comment-date"> at ${json[i].time} </p>
                                         </div>
                                         <div class="comment-body">
-                                            <p class="comment-date">${json[i].body}</p>
+                                            <p class="comment-text">${json[i].body}</p>
                                         </div>
                                     </li>`;
         }
