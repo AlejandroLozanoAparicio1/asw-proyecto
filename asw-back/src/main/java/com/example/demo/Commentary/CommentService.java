@@ -3,6 +3,7 @@ package com.example.demo.Commentary;
 import com.example.demo.News.News;
 import com.example.demo.Reply.Reply;
 import com.example.demo.User.HackNewsRepository;
+import com.example.demo.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -76,6 +77,12 @@ public class CommentService {
 
         commentRepository.save(reply);
         comment.addComments(new Reply(reply.getId()));
+        commentRepository.save(comment);
+    }
+
+    public void like(Long id, User user) {
+        Comment comment = commentRepository.findById(id).get();
+        comment.like(user);
         commentRepository.save(comment);
     }
 }
