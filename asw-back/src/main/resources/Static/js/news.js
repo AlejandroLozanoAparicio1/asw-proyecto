@@ -1,4 +1,4 @@
-const news = document.getElementById("main-container");
+let container = document.getElementById("main-container");
 let newComment = "";
 
 const changeNewComment = (NewComment) => {
@@ -65,7 +65,7 @@ const addComment = async (id) => {
 async function getNewsView(id) {
     const response = await fetch("http://localhost:8081/news/" + id);
     const json = await response.json();
-    news.innerHTML = "";
+    container.innerHTML = "";
     let myhtml = `<div class="news-wrapper">`;
     const link = json.type == "ask" ? "http://localhost:8081/news/" + json.itemId : `${json.link}`;
     const idnew = "new"+ id;
@@ -146,7 +146,7 @@ async function getNewsView(id) {
                                     </div>`;
     }
     myhtml += `</div></div>`;
-    news.innerHTML = myhtml;
+    container.innerHTML = myhtml;
 }
 
 //getNewsView(id);
