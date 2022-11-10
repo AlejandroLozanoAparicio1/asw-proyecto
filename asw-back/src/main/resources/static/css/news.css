@@ -33,6 +33,7 @@ img.like-btn {
     margin-right: 1rem;
     border: none;
     background-repeat: no-repeat;
+    cursor: pointer;
 }
 
 .submission-title {

@@ -63,6 +63,7 @@
     border-radius: 0.5rem;
     background-color: #112D4E;
     color: white;
+    cursor: pointer;
 }
 
 .reply-btn {
@@ -74,4 +75,5 @@
     border-radius: 0.5rem;
     background-color: #112D4E;
     color: white;
+    cursor: pointer;
 }

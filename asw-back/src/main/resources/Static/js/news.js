@@ -1,4 +1,4 @@
-const news = document.getElementById("news-container");
+const news = document.getElementById("main-container");
 let newComment = "";
 
 const changeNewComment = (NewComment) => {
@@ -17,7 +17,10 @@ const likeBtn = async (btn) => {
     };
     const type = btn.id[0] + btn.id[1] + btn.id[2];
     if (type == "new") {
-        const id = btn.id[3] + btn.id[4];
+        let id = "";
+        for (let x = 0; x < btn.id.length; ++x) {
+            if (x > 2) id += btn.id[x];
+        }
         const response = await fetch("http://localhost:8081/news/" + id + "/like", {
             method: 'PUT',
             headers: {
@@ -59,7 +62,7 @@ const addComment = async (id) => {
     await getNewsView(id);
 }
 
-const getNewsView = async (id) => {
+async function getNewsView(id) {
     const response = await fetch("http://localhost:8081/news/" + id);
     const json = await response.json();
     news.innerHTML = "";
@@ -146,4 +149,4 @@ const getNewsView = async (id) => {
     news.innerHTML = myhtml;
 }
 
-getNewsView(54);
+//getNewsView(id);
