@@ -19,6 +19,7 @@ const addComment = async (id) => {
         },
         body: JSON.stringify(jsonSubmit)
     });
+    await getNewsView(id);
 }
 
 const getNewsView = async (id) => {
@@ -62,8 +63,8 @@ const getNewsView = async (id) => {
                                </div>
                                <div class="comment-form">
                                     <form>
-                                        <input type="text" />
-                                        <input type="button" value="Add comment" class="submit-btn" />
+                                        <input type="text" onchange="changeNewComment(value)" />
+                                        <input type="button" value="Add comment" class="add-comm-btn"  onclick="addComment(${id})"/>
                                     </form>
                                </div>
                                <div class="news-comments">`;
