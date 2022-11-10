@@ -13,6 +13,41 @@
     border-bottom: #A0A0A0 1px solid;
 }
 
+.comment-info {
+    display: flex;
+    flex-direction: row;
+}
+
+.ini-comment {
+    display: block;
+    width: 5px;
+    height: 5px;
+    background-color: #112D4E;
+    margin-top: 5px;
+    margin-right: 0.7rem;
+    transform: rotate(45deg);
+    border-radius: 0.1rem;
+}
+
+.comment-points, .comment-user, .comment-date {
+    color: #A0A0A0;
+    font-size: 0.8rem;
+    margin-right: 0.2rem;
+}
+
+.comment-user > span {
+    color: #3F72AF;
+}
+
+.comment-body {
+    margin-top: 0.3rem;
+}
+
+.comment-text {
+    color: black;
+    font-size: 1.2rem;
+}
+
 .last-sub {
     border-bottom: none;
 }

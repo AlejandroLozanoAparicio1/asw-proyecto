@@ -29,5 +29,5 @@ const submitNews = async () => {
         body: JSON.stringify(jsonSubmit)
     });
 
-    window.location.href = 'http://localhost:8081/';
+    //window.location.href = 'http://localhost:8081/';
 }
