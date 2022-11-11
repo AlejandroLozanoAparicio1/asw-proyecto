@@ -1,4 +1,10 @@
 let idReply = 0;
+let replyText = "";
+
+const handleChangeReply = (text) => {
+    replyText = text;
+}
+
 
 const saveId = async (id) => {
     idReply = id;
@@ -9,9 +15,9 @@ const addReply = async (id) => {
         user: {
             username: localStorage.getItem("username")
         },
-        body: "text"
+        body: replyText
     };
-    console.log(idReply);
+
     const response = await fetch("http://localhost:8081/news/" + idReply + "/reply", {
         method: 'PUT',
         headers: {
