@@ -12,7 +12,6 @@ function changeBody(newBody){
 
 async function submitNews() {
     let username = localStorage.getItem("username")
-    console.log(url)
     if(typeof url != 'undefined' && url !=null) page = url.split('/')[2];
     else{
         url = null;
