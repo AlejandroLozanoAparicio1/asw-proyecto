@@ -83,7 +83,10 @@ public class CommentService {
 
     public void like(Long id, User user) {
         Comment comment = commentRepository.findById(id).get();
-        comment.like(user);
+        int add = comment.like(user);
+        User us = userRepository.findUserByUsername(comment.getUser().getUsername());
+        us.setKarma(us.getKarma() + add);
+        userRepository.save(us);
         commentRepository.save(comment);
     }
 }

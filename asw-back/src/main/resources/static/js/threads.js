@@ -12,7 +12,6 @@ async function getUserComments(){
 
         const idcomm = "com" + json[i].id;
         let hasUserComment = false;
-        console.log(json[i])
         for (let k = 0; k < json[i].likedBy.length; ++k) {
             if (json[i].likedBy[k].username == localStorage.getItem("username"));
             hasUserComment = true;

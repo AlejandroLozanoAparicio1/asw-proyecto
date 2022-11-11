@@ -74,7 +74,7 @@ const getNews = async (url) => {
                                     <a class="submission-page" href="${json[i].page_}">(${json[i].page_})</a>
                                 </div>
                                 <div class="submission-lower">
-                                    <p class="submission-info">${json[i].likedBy.length} points by <a>${json[i].username.username}</a> at ${json[i].datePublished}</p>
+                                    <p class="submission-info">${json[i].likedBy.length} points by <a class="sub-username">${json[i].username.username}</a> at ${json[i].datePublished}</p>
                                     <p class="submission-info sub-comments" onclick="getSingleNews(${json[i].itemId})">${json[i].comments.length} comments</p>
                                 </div>
                            </li>`;
