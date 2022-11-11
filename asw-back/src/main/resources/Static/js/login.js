@@ -14,6 +14,8 @@ async function changeButton(username){
     su.className = "nav-item";
 }
 function signOut() {
+    localStorage.removeItem("username");
+    window.location.reload();
     console.log("minerva")
     var auth2 = gapi.auth2
     console.log(auth2)
