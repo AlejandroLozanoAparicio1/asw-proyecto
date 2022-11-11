@@ -66,3 +66,7 @@ img.like-btn {
     text-decoration: none;
     color: #808080;
 }
+
+.hide {
+    display: none;
+}

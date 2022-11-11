@@ -1,4 +1,12 @@
 const news = document.getElementById("main-container");
+
+if (localStorage.getItem("username") == null) {
+    const th = document.getElementById("navbar-threads");
+    const su = document.getElementById("navbar-submit");
+    th.className = "nav-item hide";
+    su.className = "nav-item hide";
+}
+
 function setHtml(htmlUri){
     var xhr = new XMLHttpRequest();
     xhr.open('GET',htmlUri, true);
