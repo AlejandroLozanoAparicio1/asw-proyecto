@@ -1,6 +1,39 @@
 let container = document.getElementById("main-container");
 let newComment = "";
 
+function getCommentariesAndReplies(comment) {
+    let commentsection = document.getElementById("main-container");
+    if (comment.replies.length === 0) {
+        commentsection.innerHTML += `<div class="reply comment">
+                                        <div class="comment-info">
+                                            <p class="comment-points">0 points ${comment.id}</p>
+                                            <p class="comment-user"> by ${comment.user.username}</p>
+                                            <p class="comment-date"> at ${comment.time}</p>
+                                        </div>
+                                            <div class="comment-body">
+                                                <p class="comment-date">${comment.body}</p>
+                                            </div>
+                                        </div>
+                                    </div>`;
+    }
+
+
+    for (let i = 0; comment.replies.length > i; i++) {
+        getCommentariesAndReplies(comment.replies[i]);
+    }
+
+}
+
+async function printCommentaries(id) {
+    //let username = localStorage.getItem("username"); // en un futuro cambiar por username
+    const response = await fetch("http://localhost:8081/comment/" + id);
+    const json = await response.json();
+    return getCommentariesAndReplies(json);
+}
+
+
+
+
 const changeNewComment = (NewComment) => {
     newComment = NewComment;
 }
@@ -123,6 +156,7 @@ async function getNewsView(id) {
                                </div>
                                <div class="news-comments">`;
     }
+
     for (let i = 0; i < json.comments.length; ++i) {
         const idcomm = "com" + json.comments[i].id;
         let cssclass = "comment";
@@ -134,6 +168,8 @@ async function getNewsView(id) {
                 hasUserComment = true;
         }
         const srcComment = hasUserComment ? "../images/heart-solid.svg" : "../images/heart-regular.svg";
+
+
 
         myhtml += `<div class="${cssclass}">
                                         <div class="comment-info">
@@ -149,9 +185,11 @@ async function getNewsView(id) {
                                             <a class="reply-btn" onclick='goToReply(${json.comments[i].id})' >reply</a>
                                         </div>
                                     </div>`;
+        printCommentaries(json.comments[i].id);
+        myhtml += `</div></div>`;
+        container.innerHTML += myhtml;
     }
-    myhtml += `</div></div>`;
-    container.innerHTML = myhtml;
-}
 
-//getNewsView(id);
+
+
+}
