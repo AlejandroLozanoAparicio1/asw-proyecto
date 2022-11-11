@@ -1,6 +1,5 @@
-const commentsection = document.getElementById("main-container");
-
-const getUserComments = async () => {
+async function getUserComments(){
+    let commentsection = document.getElementById("main-container");
     let username = localStorage.getItem("username")
     const response = await fetch("http://localhost:8081/comment/user/" + username);
     const json = await response.json();

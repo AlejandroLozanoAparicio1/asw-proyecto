@@ -1,33 +1,37 @@
 let title, url, body;
 
-const changeTitle = (newTitle) => {
+function changeTitle(newTitle){
     title = newTitle;
 }
-const changeUrl = (newUrl) => {
+function changeUrl(newUrl){
     url = newUrl;
 }
-const changeBody = (newBody) => {
+function changeBody(newBody){
     body = newBody;
 }
 
-const submitNews = async () => {
-    const page = url.split('/')[2];
+async function submitNews() {
+    let username = localStorage.getItem("username")
+    console.log(url)
+    if(typeof url != 'undefined' && url !=null) page = url.split('/')[2];
+    else{
+        url = null;
+        page = null;
+    }
     let jsonSubmit = {
         title: title,
         page_: page,
         username: {
-            username: "alex"
+            username: username
         },
         link: url,
         text: body
     };
-    const response = await fetch("http://localhost:8081/submit", {
+    await fetch("http://localhost:8081/submit", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(jsonSubmit)
     });
-
-    window.location.href = 'http://localhost:8081/';
 }
