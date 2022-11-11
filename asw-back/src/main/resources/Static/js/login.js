@@ -7,9 +7,15 @@ async function changeButton(username){
         `<ul class="nav-log">
             <li class="nav-item"><a onclick="getProfile()" id="me">${username}</a><span id="karma">(${karma})</span></li>
             <li class="nav-item"><a id="logout" onClick="signOut()">logout</a></li>
-        </ul>`
+        </ul>`;
+    const th = document.getElementById("navbar-threads");
+    const su = document.getElementById("navbar-submit");
+    th.className = "nav-item";
+    su.className = "nav-item";
 }
 function signOut() {
+    localStorage.removeItem("username");
+    window.location.reload();
     console.log("minerva")
     var auth2 = gapi.auth2
     console.log(auth2)

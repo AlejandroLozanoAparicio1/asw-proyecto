@@ -94,7 +94,7 @@ public class Comment {
         this.likedBy = likedBy;
     }
 
-    public void like(User user) {
+    public int like(User user) {
         int pos = -1;
         for (int i = 0; i < this.likedBy.size() && pos == -1; ++i) {
             if (this.likedBy.get(i).getUsername().equals(user.getUsername()))
@@ -102,9 +102,11 @@ public class Comment {
         }
         if (pos == -1) {
             this.likedBy.add(user);
+            return 1;
         }
         else {
             this.likedBy.remove(pos);
+            return -1;
         }
     }
 

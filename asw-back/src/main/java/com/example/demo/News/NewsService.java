@@ -2,6 +2,7 @@ package com.example.demo.News;
 
 import com.example.demo.Commentary.Comment;
 import com.example.demo.Commentary.CommentRepository;
+import com.example.demo.User.HackNewsRepository;
 import com.example.demo.User.User;
 import com.example.demo.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class NewsService {
     private final UserService userService;
     @Autowired
     private NewsRepository newsRepository;
+
+    @Autowired
+    private HackNewsRepository userRepository;
     @Autowired
     private CommentRepository commentRepository;
 
@@ -74,7 +78,10 @@ public class NewsService {
 
     public void like(Long id, User user) {
         News news = newsRepository.findById(id).get();
-        news.like(user);
+        int add = news.like(user);
+        User us = userRepository.findUserByUsername(news.getUsername().getUsername());
+        us.setKarma(us.getKarma() + add);
+        userRepository.save(us);
         newsRepository.save(news);
     }
 
