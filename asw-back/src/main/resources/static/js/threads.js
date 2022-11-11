@@ -9,17 +9,30 @@ async function getUserComments(){
     for (let i = 0; i < json.length; i++) {
         let cssclass = "comment";
         if (i == json.length - 1) cssclass = "comment last-sub";
-        myhtml += `<li class="${cssclass}">
+
+        const idcomm = "com" + json[i].id;
+        let hasUserComment = false;
+        console.log(json[i])
+        for (let k = 0; k < json[i].likedBy.length; ++k) {
+            if (json[i].likedBy[k].username == localStorage.getItem("username"));
+            hasUserComment = true;
+        }
+        const srcComment = hasUserComment ? "../images/heart-solid.svg" : "../images/heart-regular.svg";
+
+        myhtml += `<div class="${cssclass}">
                                         <div class="comment-info">
-                                            <span class="ini-comment"></span>
-                                            <p class="comment-points">0 points </p>
+                                            <img id="${idcomm}" class="like-btn" src='${srcComment}' alt="heart" onclick='likeBtn(${idcomm})' />
+                                            <p class="comment-points">${json[i].likedBy.length} points </p>
                                             <p class="comment-user"> by <span>${json[i].user.username}</span> </p>
                                             <p class="comment-date"> at ${json[i].time} </p>
                                         </div>
                                         <div class="comment-body">
                                             <p class="comment-text">${json[i].body}</p>
                                         </div>
-                                    </li>`;
+                                        <div class="comment-reply">
+                                            <a class="reply-btn" onclick='goToReply(${json[i].id})' >reply</a>
+                                        </div>
+                                    </div>`;
     }
     myhtml += `</ul>
               </div>

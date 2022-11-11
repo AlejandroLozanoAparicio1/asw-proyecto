@@ -1,4 +1,12 @@
 const news = document.getElementById("main-container");
+
+if (localStorage.getItem("username") == null) {
+    const th = document.getElementById("navbar-threads");
+    const su = document.getElementById("navbar-submit");
+    th.className = "nav-item hide";
+    su.className = "nav-item hide";
+}
+
 function setHtml(htmlUri){
     var xhr = new XMLHttpRequest();
     xhr.open('GET',htmlUri, true);
@@ -47,11 +55,21 @@ const getNews = async (url) => {
     for (let i = 0; i < json.length; i++) {
         let cssclass = "submission";
         if (i == json.length - 1) cssclass = "submission last-sub"
+
+        const idnew = "new"+ json[i].itemId;
+
+        let hasUser = false;
+
+        for (let k = 0; k < json[i].likedBy.length; ++k) {
+            if (json[i].likedBy[k].username == localStorage.getItem("username"))
+                hasUser = true;
+        }
+        const src = hasUser ? "../images/heart-solid.svg" : "../images/heart-regular.svg";
         if (json[i].type == "url")
         {
             html += `<li class="${cssclass}">
                                 <div class="submission-upper">
-                                    <span class="like-btn"></span>
+                                    <img id="${idnew}" class="like-btn" src='${src}' alt="heart" onclick='likeBtn(${idnew})' />
                                     <a class="submission-title" href="${json[i].link}" >${json[i].title}</a>
                                     <a class="submission-page" href="${json[i].page_}">(${json[i].page_})</a>
                                 </div>
@@ -64,13 +82,12 @@ const getNews = async (url) => {
         else {
             html += `<li class="${cssclass}">
                                 <div class="submission-upper">
-                                    <img class="like-btn" />
+                                    <img id="${idnew}" class="like-btn" src='${src}' alt="heart" onclick='likeBtn(${idnew})' />
                                     <p class="submission-title" onclick="getSingleNews(${json[i].itemId})">${json[i].title}</p>
                                 </div>
                                 <div class="submission-lower">
-                                    <p class="submission-info">${json[i].likedBy.length} points by <a>${json[i].username.username}</a> at ${json[i].datePublished}</p>
+                                    <p class="submission-info">${json[i].likedBy.length} points by <a class="sub-username">${json[i].username.username}</a> at ${json[i].datePublished}</p>
                                     <p class="submission-info sub-comments" onclick="getSingleNews(${json[i].itemId})">${json[i].comments.length} comments</p>
-                                    
                                 </div>
                            </li>`;
         }
