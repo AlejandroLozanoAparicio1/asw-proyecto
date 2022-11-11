@@ -10,10 +10,11 @@ function setHtml(htmlUri){
     xhr.send();
 }
 async function getThreads() {
-    await setHtml('threads.html')
-    var script = document.createElement('script');
+    //await setHtml('threads.html');
+    await getUserComments();
+    /*var script = document.createElement('script');
     script.setAttribute("src", "js/threads.js")
-    document.head.appendChild(script);
+    document.head.appendChild(script);*/
 }
 
 async function getProfile() {
