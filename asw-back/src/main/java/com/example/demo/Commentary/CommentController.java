@@ -46,4 +46,9 @@ public class CommentController {
     public List<Comment> liked(@RequestParam String username){
         return commentService.liked(username);
     }
+
+    @GetMapping("comments/news")
+    public List<Long> getNewsComments(@PathVariable long id){
+        return commentService.getNewsComments();
+    }
 }

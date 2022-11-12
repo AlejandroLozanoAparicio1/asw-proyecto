@@ -92,4 +92,8 @@ public class CommentService {
     public List<Comment> liked(String username) {
         return commentRepository.getLikedByUsername(username);
     }
+
+    public List<Long> getNewsComments() {
+        return
+    }
 }
