@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-
+@CrossOrigin
 @RestController
 public class NewsController {
     @Autowired
@@ -19,6 +19,7 @@ public class NewsController {
     public List<News> getNewsList() {
         return newsService.getNewsList();
     }
+
 
     @GetMapping("ask")
     public List<News> getNewsAsk() {

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
 public class CommentController {
     @Autowired
@@ -22,6 +23,7 @@ public class CommentController {
         return commentService.getComment(id);
     }
 
+    @CrossOrigin
     @GetMapping("comment/user/{id}")
     public List<Comment> getUserComments(@PathVariable("id") String id) {
         return commentService.getUserComments(id);
