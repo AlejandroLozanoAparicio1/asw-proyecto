@@ -10,4 +10,8 @@ import java.util.List;
 public interface NewsRepository extends JpaRepository<News, Long>  {
     @Query(value = "select * from news where username =:username", nativeQuery = true)
     public List<News> findAllByUsername(@Param("username")String username);
+
+    @Query(value = "select * from news_liked_by nlb, news n where nlb.liked_by_username = :username and n.item_id  = nlb.news_item_id", nativeQuery = true)
+    public List<News> getLikedNews(@Param("username")String username);
+
 }

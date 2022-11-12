@@ -105,4 +105,8 @@ public class NewsService {
     public List<News> getNewsByUsername(String username) {
         return newsRepository.findAllByUsername(username);
     }
+
+    public List<News> getLikedNews(String username) {
+        return newsRepository.getLikedNews(username);
+    }
 }

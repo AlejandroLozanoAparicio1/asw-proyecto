@@ -69,5 +69,9 @@ public class NewsController {
     public List<News> getNewsByUsername(@RequestParam String username) {
         return newsService.getNewsByUsername(username);
     }
+    @GetMapping("news/liked")
+    public List<News> getLikedNews(@RequestParam String username){
+        return newsService.getLikedNews(username);
+    }
 
 }
