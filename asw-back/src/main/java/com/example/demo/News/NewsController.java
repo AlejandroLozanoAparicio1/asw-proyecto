@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin
 public class NewsController {
     @Autowired
     NewsService newsService;
@@ -67,6 +68,10 @@ public class NewsController {
     @GetMapping("news/user")
     public List<News> getNewsByUsername(@RequestParam String username) {
         return newsService.getNewsByUsername(username);
+    }
+    @GetMapping("news/liked")
+    public List<News> getLikedNews(@RequestParam String username){
+        return newsService.getLikedNews(username);
     }
 
 }
