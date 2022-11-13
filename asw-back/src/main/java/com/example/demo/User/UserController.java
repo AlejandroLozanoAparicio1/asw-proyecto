@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 public class UserController {
     @Autowired

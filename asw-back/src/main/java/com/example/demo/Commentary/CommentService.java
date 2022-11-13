@@ -30,7 +30,7 @@ public class CommentService {
 
     public CommentDTO getComment(Long id) {
         Comment comment = commentRepository.findById(id).get();
-        CommentDTO commentDTO = new CommentDTO(comment.getId(), comment.getUser(), comment.getTime(), comment.getBody(), new ArrayList<CommentDTO>());
+        CommentDTO commentDTO = new CommentDTO(comment.getId(), comment.getUser(), comment.getTime(), comment.getBody(), new ArrayList<CommentDTO>(), new ArrayList<User>());
         List<Reply> replies = comment.getReplies();
         getReplies(comment.getReplies(), commentDTO.getReplies());
         return commentDTO;
@@ -42,7 +42,7 @@ public class CommentService {
         Comment comment;
         for(Reply reply : replies) {
             comment = commentRepository.findById(reply.getComenntaryId()).get();
-            CommentDTO commentDTO = new CommentDTO(comment.getId(), comment.getUser(), comment.getTime(), comment.getBody(), new ArrayList<CommentDTO>());
+            CommentDTO commentDTO = new CommentDTO(comment.getId(), comment.getUser(), comment.getTime(), comment.getBody(), new ArrayList<CommentDTO>(), new ArrayList<User>());
             comments.add(commentDTO);
             getReplies(comment.getReplies(), commentDTO.getReplies());
         }

@@ -36,6 +36,7 @@ public class NewsController {
         return newsService.getNewest();
     }
 
+    @CrossOrigin
     @GetMapping("news/{id}")
     public Optional<News> getNews(@PathVariable Long id) {
         return newsService.getNews(id);
