@@ -1,6 +1,39 @@
 let container = document.getElementById("main-container");
 let newComment = "";
 
+function getCommentariesAndReplies(comment) {
+    let commentsection = document.getElementById("main-container");
+    if (comment.replies.length === 0) {
+        commentsection.innerHTML += `<div class="reply comment">
+                                        <div class="comment-info">
+                                            <p class="comment-points">0 points ${comment.id}</p>
+                                            <p class="comment-user"> by ${comment.user.username}</p>
+                                            <p class="comment-date"> at ${comment.time}</p>
+                                        </div>
+                                            <div class="comment-body">
+                                                <p class="comment-date">${comment.body}</p>
+                                            </div>
+                                        </div>
+                                    </div>`;
+    }
+
+
+    for (let i = 0; comment.replies.length > i; i++) {
+        getCommentariesAndReplies(comment.replies[i]);
+    }
+
+}
+
+async function printCommentaries(id) {
+    //let username = localStorage.getItem("username"); // en un futuro cambiar por username
+    const response = await fetch("http://localhost:8081/comment/" + id);
+    const json = await response.json();
+    return getCommentariesAndReplies(json);
+}
+
+
+
+
 const changeNewComment = (NewComment) => {
     newComment = NewComment;
 }
@@ -35,7 +68,7 @@ const likeBtn = async (btn) => {
             if (x > 2) id += btn.id[x];
         }
 
-        const response = await fetch("http://localhost:8081/comment/" + 70 + "/like", {
+        const response = await fetch("http://localhost:8081/comment/" + id + "/like", {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -60,6 +93,11 @@ const addComment = async (id) => {
         body: JSON.stringify(jsonSubmit)
     });
     await getNewsView(id);
+}
+
+const goToReply = async (id) => {
+    await setHtml('reply.html');
+    await saveId(id);
 }
 
 async function getNewsView(id) {
@@ -118,8 +156,9 @@ async function getNewsView(id) {
                                </div>
                                <div class="news-comments">`;
     }
+
     for (let i = 0; i < json.comments.length; ++i) {
-        const idcomm = "com" + i;
+        const idcomm = "com" + json.comments[i].id;
         let cssclass = "comment";
         if (i == json.comments.length - 1) cssclass = "comment last-sub";
 
@@ -130,10 +169,12 @@ async function getNewsView(id) {
         }
         const srcComment = hasUserComment ? "../images/heart-solid.svg" : "../images/heart-regular.svg";
 
+
+
         myhtml += `<div class="${cssclass}">
                                         <div class="comment-info">
                                             <img id="${idcomm}" class="like-btn" src='${srcComment}' alt="heart" onclick='likeBtn(${idcomm})' />
-                                            <p class="comment-points">0 points </p>
+                                            <p class="comment-points">${json.comments[i].likedBy.length} points </p>
                                             <p class="comment-user"> by <span>${json.comments[i].user.username}</span> </p>
                                             <p class="comment-date"> at ${json.comments[i].time} </p>
                                         </div>
@@ -141,12 +182,14 @@ async function getNewsView(id) {
                                             <p class="comment-text">${json.comments[i].body}</p>
                                         </div>
                                         <div class="comment-reply">
-                                            <a class="reply-btn" onclick="() => {}" >reply</a>
+                                            <a class="reply-btn" onclick='goToReply(${json.comments[i].id})' >reply</a>
                                         </div>
                                     </div>`;
+        printCommentaries(json.comments[i].id);
+        myhtml += `</div></div>`;
+        container.innerHTML += myhtml;
     }
-    myhtml += `</div></div>`;
-    container.innerHTML = myhtml;
-}
 
-//getNewsView(id);
+
+
+}

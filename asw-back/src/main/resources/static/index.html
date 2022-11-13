@@ -17,10 +17,10 @@
         <ul class="nav-links">
             <li class="nav-item"><a id="hacker-news" href="">Hacker News</a></li>
             <li class="nav-item"><a onclick="getNews('newest')">new</a></li>
-            <li class="nav-item"><a onclick="getThreads('threads')">threads</a></li>
+            <li id="navbar-threads" class="nav-item"><a onclick="getThreads('threads')">threads</a></li>
             <li class="nav-item"><a onclick="getNews('ask')">ask</a></li>
             <li class="nav-item"><a onclick="getNews('show')">show</a></li>
-            <li class="nav-item"><a onclick="getSubmit()">submit</a></li>
+            <li id="navbar-submit" class="nav-item"><a onclick="getSubmit()">submit</a></li>
         </ul>
         <ul class="nav-log" id = "login">
             <div id="g_id_onload"
@@ -35,6 +35,9 @@
 </div>
 
 </body>
+<script src="js/reply.js"></script>
+
 <script src="js/news.js"></script>
+<script src="js/threads.js"></script>
 <script src="js/index.js"></script>
 </html>

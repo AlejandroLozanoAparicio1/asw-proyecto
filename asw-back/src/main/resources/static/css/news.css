@@ -18,6 +18,9 @@
 
 .submission-upper {
     margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
 }
 
 .submission-lower {
@@ -36,6 +39,15 @@ img.like-btn {
     cursor: pointer;
 }
 
+.sub-username {
+    color: #3F72AF;
+    font-size: 0.9rem;
+}
+
+.news-comments, sub-comments {
+    cursor: pointer;
+}
+
 .submission-title {
     font-size: 1.3rem;
     font-weight: 400;
@@ -46,10 +58,15 @@ img.like-btn {
     font-size: 1rem;
     text-decoration: none;
     color: #808080;
+    line-height: 1.75rem;
 }
 
 .submission-info {
     font-size: 0.8rem;
     text-decoration: none;
     color: #808080;
+}
+
+.hide {
+    display: none;
 }

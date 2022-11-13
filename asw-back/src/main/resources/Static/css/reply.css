@@ -1,0 +1,24 @@
+#reply {
+    width: 25%;
+    margin: 1rem auto;
+    margin-top: 3rem;
+    background-color: #F9F7F7;
+    border-radius: 0.35rem;
+    display: grid;
+    place-items: center;
+}
+
+#reply-form {
+    display: grid;
+    place-items: center;
+}
+
+#reply-text {
+    margin-bottom: 2rem;
+    height: 20vh;
+}
+
+#reply-button {
+    width: 30%;
+    margin-bottom: 2rem;
+}
