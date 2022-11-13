@@ -93,7 +93,7 @@ public class CommentService {
         return commentRepository.getLikedByUsername(username);
     }
 
-    public List<Long> getNewsComments() {
-        return
+    public List<Long> getNewsComments(long id) {
+        return this.commentRepository.getNewsComments(id);
     }
 }
