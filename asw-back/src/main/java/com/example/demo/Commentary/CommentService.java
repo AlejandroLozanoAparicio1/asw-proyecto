@@ -89,4 +89,12 @@ public class CommentService {
         userRepository.save(us);
         commentRepository.save(comment);
     }
+
+    public List<Comment> liked(String username) {
+        return commentRepository.getLikedByUsername(username);
+    }
+
+    public List<Long> getNewsComments(long id) {
+        return this.commentRepository.getNewsComments(id);
+    }
 }

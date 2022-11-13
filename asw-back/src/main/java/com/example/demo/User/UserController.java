@@ -9,6 +9,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
+@CrossOrigin
 public class UserController {
     @Autowired
     UserService userService;

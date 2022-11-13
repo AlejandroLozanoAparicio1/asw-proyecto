@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
+@CrossOrigin
 public class CommentController {
     @Autowired
     CommentService commentService;
@@ -41,5 +42,15 @@ public class CommentController {
     @PutMapping("comment/{id}/like")
     public void like(@PathVariable("id") Long id, @RequestBody User user) {
         commentService.like(id, user);
+    }
+
+    @GetMapping("comments/liked")
+    public List<Comment> liked(@RequestParam String username){
+        return commentService.liked(username);
+    }
+
+    @GetMapping("comments/news/{id}")
+    public List<Long> getNewsComments(@PathVariable long id){
+        return commentService.getNewsComments(id);
     }
 }
