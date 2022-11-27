@@ -25,9 +25,11 @@ public class UserService {
     }
 
     public User getUser(String username) {
-        Optional<User> user = hackNewsRepository.findById(username);
-        if (user.isPresent()) {
-            return user.get();
+        if (hackNewsRepository.existsById(username)) {
+            Optional<User> user = hackNewsRepository.findById(username);
+            if (user.isPresent()) {
+                return user.get();
+            }
         }
         return null;
     }

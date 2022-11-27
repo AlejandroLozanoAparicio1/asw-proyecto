@@ -66,7 +66,9 @@ public class CommentController {
 
     @GetMapping("comments/liked")
     public ResponseEntity<List<Comment>> liked(@RequestParam String username) {
-        return ResponseEntity.ok().body(commentService.liked(username));
+        List<Comment> list = commentService.liked(username);
+        if (list != null) return ResponseEntity.ok().body(list);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
     @GetMapping("comments/news/{id}")

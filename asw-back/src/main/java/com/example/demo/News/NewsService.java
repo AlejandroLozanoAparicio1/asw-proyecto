@@ -39,7 +39,8 @@ public class NewsService {
     }
 
     public Optional<News> getNews(Long id) {
-        return newsRepository.findById(id);
+        if (newsRepository.existsById(id)) return newsRepository.findById(id);
+        return null;
     }
 
     public News createNews(News news) {
@@ -67,8 +68,8 @@ public class NewsService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String currentDateTime = LocalDateTime.now().format(formatter);
         comment.setTime(currentDateTime);
-        News news = newsRepository.findById(id).get();
-        if (news != null) {
+        if (newsRepository.existsById(id)) {
+            News news = newsRepository.findById(id).get();
             Comment comment1 = commentRepository.save(comment);
             news.addComment(comment);
             newsRepository.save(news);
@@ -77,13 +78,17 @@ public class NewsService {
         return null;
     }
 
-    public void like(Long id, User user) {
-        News news = newsRepository.findById(id).get();
-        int add = news.like(user);
-        User us = userRepository.findUserByUsername(news.getUsername().getUsername());
-        us.setKarma(us.getKarma() + add);
-        userRepository.save(us);
-        newsRepository.save(news);
+    public String like(Long id, User user) {
+        if (newsRepository.existsById(id)) {
+            News news = newsRepository.findById(id).get();
+            int add = news.like(user);
+            User us = userRepository.findUserByUsername(news.getUsername().getUsername());
+            us.setKarma(us.getKarma() + add);
+            userRepository.save(us);
+            newsRepository.save(news);
+            return "";
+        }
+        return null;
     }
 
     public List<News> getNewsAsk() {
@@ -111,10 +116,12 @@ public class NewsService {
     }
 
     public List<News> getNewsByUsername(String username) {
-        return newsRepository.findAllByUsername(username);
+        if (userRepository.existsById(username)) return newsRepository.findAllByUsername(username);
+        return null;
     }
 
     public List<News> getLikedNews(String username) {
-        return newsRepository.getLikedNews(username);
+        if (userRepository.existsById(username)) return newsRepository.getLikedNews(username);
+        return null;
     }
 }
