@@ -42,7 +42,7 @@ public class NewsService {
         return newsRepository.findById(id);
     }
 
-    public Long createNews(News news) {
+    public News createNews(News news) {
         if (news.getLink() != null) news.setType("url");
         else news.setType("ask");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
@@ -51,29 +51,30 @@ public class NewsService {
         news.setPoints(0);
         User user = userService.getUser(news.getUsername().getUsername());
         news.setUsername(user);
-        try {
-            newsRepository.save(news);
-        }
-        catch (Exception e) {
-            return (long)-1;
-        }
-        return news.getItemId();
-
+        return newsRepository.save(news);
     }
 
 
     public List<Comment> getComments(Long id) {
-        return newsRepository.findById(id).get().getComments();
+        News news = newsRepository.findById(id).get();
+        if (news != null) {
+            return news.getComments();
+        }
+        return null;
     }
 
-    public void newComment(Long id, Comment comment) {
+    public Comment newComment(Long id, Comment comment) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String currentDateTime = LocalDateTime.now().format(formatter);
         comment.setTime(currentDateTime);
-        commentRepository.save(comment);
         News news = newsRepository.findById(id).get();
-        news.addComment(comment);
-        newsRepository.save(news);
+        if (news != null) {
+            Comment comment1 = commentRepository.save(comment);
+            news.addComment(comment);
+            newsRepository.save(news);
+            return comment1;
+        }
+        return null;
     }
 
     public void like(Long id, User user) {

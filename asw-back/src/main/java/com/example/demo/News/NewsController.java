@@ -2,76 +2,94 @@ package com.example.demo.News;
 
 import com.example.demo.Commentary.Comment;
 import com.example.demo.User.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @CrossOrigin
 public class NewsController {
-    @Autowired
-    NewsService newsService;
+
+    public NewsController(NewsService newsService) {
+        this.newsService = newsService;
+    }
+
+    private final NewsService newsService;
 
     @GetMapping("news")
-    public List<News> getNewsList() {
-        return newsService.getNewsList();
+    public ResponseEntity<List<News>> getNewsList() {
+        return ResponseEntity.ok().body(newsService.getNewsList());
     }
 
     @GetMapping("ask")
-    public List<News> getNewsAsk() {
-        return newsService.getNewsAsk();
+    public ResponseEntity<List<News>> getNewsAsk() {
+        return ResponseEntity.ok().body(newsService.getNewsAsk());
     }
 
     @GetMapping("show")
-    public List<News> getNewsShow() {
-        return newsService.getNewsShow();
+    public ResponseEntity<List<News>> getNewsShow() {
+        return ResponseEntity.ok().body(newsService.getNewsShow());
     }
 
     @GetMapping("newest")
-    public List<News> getNewest() {
-        return newsService.getNewest();
+    public ResponseEntity<List<News>> getNewest() {
+        return ResponseEntity.ok().body(newsService.getNewest());
     }
 
     @GetMapping("news/{id}")
-    public Optional<News> getNews(@PathVariable Long id) {
-        return newsService.getNews(id);
+    public ResponseEntity<Optional<News>> getNews(@PathVariable Long id) throws Exception {
+        Optional<News> news = newsService.getNews(id);
+        if (news != null) {
+            return ResponseEntity.ok().body(news);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
     @PostMapping("submit")
-    public Long createNews(@RequestBody News news) {
-        /*response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(json);*/
-        return newsService.createNews(news);
-
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<News> createNews(@RequestBody News news) {
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/submit").toUriString());
+        return ResponseEntity.created(uri).body(newsService.createNews(news));
     }
 
     @GetMapping("news/{id}/comments")
-    public List<Comment> getComments(@PathVariable Long id) {
-        return newsService.getComments(id);
+    public ResponseEntity<List<Comment>> getComments(@PathVariable Long id) {
+        List<Comment> list = newsService.getComments(id);
+        if (list != null) return ResponseEntity.ok().body(list);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
     @PutMapping("news/{id}/newcomment")
-    public void addComment(@PathVariable("id") Long id, @RequestBody Comment comment) {
-        newsService.newComment(id, comment);
+    public ResponseEntity<Comment> addComment(@PathVariable("id") Long id, @RequestBody Comment comment) {
+        Comment comment1 = newsService.newComment(id, comment);
+        if (comment1 != null) return ResponseEntity.ok().body(comment1);
+        return null;
     }
 
     @PutMapping("news/{id}/like")
-    public void like(@PathVariable("id") Long id, @RequestBody User user) {
-        newsService.like(id, user);
+    public ResponseEntity<String> like(@PathVariable("id") Long id, @RequestBody User user) throws Exception {
+        Optional<News> news = newsService.getNews(id);
+        if (news != null) {
+            newsService.like(id, user);
+            return ResponseEntity.ok().body("");
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
     }
 
     @GetMapping("news/user")
-    public List<News> getNewsByUsername(@RequestParam String username) {
-        return newsService.getNewsByUsername(username);
+    public ResponseEntity<List<News>> getNewsByUsername(@RequestParam String username) {
+        return ResponseEntity.ok().body(newsService.getNewsByUsername(username));
     }
+
     @GetMapping("news/liked")
-    public List<News> getLikedNews(@RequestParam String username){
-        return newsService.getLikedNews(username);
+    public ResponseEntity<List<News>> getLikedNews(@RequestParam String username) {
+        return ResponseEntity.ok().body(newsService.getLikedNews(username));
     }
 
 }
