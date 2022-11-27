@@ -81,13 +81,17 @@ public class CommentService {
     }
 
 
-    public void like(Long id, User user) {
+    public Boolean like(Long id, User user) {
         Comment comment = commentRepository.findById(id).get();
-        int add = comment.like(user);
-        User us = userRepository.findUserByUsername(comment.getUser().getUsername());
-        us.setKarma(us.getKarma() + add);
-        userRepository.save(us);
-        commentRepository.save(comment);
+        if (comment != null) {
+            int add = comment.like(user);
+            User us = userRepository.findUserByUsername(comment.getUser().getUsername());
+            us.setKarma(us.getKarma() + add);
+            userRepository.save(us);
+            commentRepository.save(comment);
+            return true;
+        }
+        return false;
     }
 
     public List<Comment> liked(String username) {

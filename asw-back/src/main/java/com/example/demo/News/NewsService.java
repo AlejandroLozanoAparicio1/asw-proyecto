@@ -38,7 +38,7 @@ public class NewsService {
         return newsRepository.findAll(Sort.by(Sort.Direction.DESC, "datePublished"));
     }
 
-    public Optional<News> getNews(Long id) throws Exception {
+    public Optional<News> getNews(Long id) {
         return newsRepository.findById(id);
     }
 
@@ -56,17 +56,25 @@ public class NewsService {
 
 
     public List<Comment> getComments(Long id) {
-        return newsRepository.findById(id).get().getComments();
+        News news = newsRepository.findById(id).get();
+        if (news != null) {
+            return news.getComments();
+        }
+        return null;
     }
 
-    public void newComment(Long id, Comment comment) {
+    public Comment newComment(Long id, Comment comment) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String currentDateTime = LocalDateTime.now().format(formatter);
         comment.setTime(currentDateTime);
-        commentRepository.save(comment);
         News news = newsRepository.findById(id).get();
-        news.addComment(comment);
-        newsRepository.save(news);
+        if (news != null) {
+            Comment comment1 = commentRepository.save(comment);
+            news.addComment(comment);
+            newsRepository.save(news);
+            return comment1;
+        }
+        return null;
     }
 
     public void like(Long id, User user) {
