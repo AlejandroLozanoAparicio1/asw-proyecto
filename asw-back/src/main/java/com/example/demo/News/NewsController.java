@@ -3,10 +3,12 @@ package com.example.demo.News;
 import com.example.demo.Commentary.Comment;
 import com.example.demo.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,42 +19,46 @@ public class NewsController {
     NewsService newsService;
 
     @GetMapping("news")
-    public List<News> getNewsList() {
-        return newsService.getNewsList();
+    public ResponseEntity<List<News>> getNewsList() {
+        return ResponseEntity.ok().body(newsService.getNewsList());
     }
 
     @GetMapping("ask")
-    public List<News> getNewsAsk() {
-        return newsService.getNewsAsk();
+    public ResponseEntity<List<News>> getNewsAsk() {
+        return ResponseEntity.ok().body(newsService.getNewsAsk());
     }
 
     @GetMapping("show")
-    public List<News> getNewsShow() {
-        return newsService.getNewsShow();
+    public ResponseEntity<List<News>> getNewsShow() {
+        return ResponseEntity.ok().body(newsService.getNewsShow());
     }
 
     @GetMapping("newest")
-    public List<News> getNewest() {
-        return newsService.getNewest();
+    public ResponseEntity<List<News>> getNewest() {
+        return ResponseEntity.ok().body(newsService.getNewest());
     }
 
     @GetMapping("news/{id}")
-    public Optional<News> getNews(@PathVariable Long id) {
-        return newsService.getNews(id);
+    @ResponseBody
+    public ResponseEntity<Optional<News>> getNews(@PathVariable Long id) throws Exception {
+        Optional<News> news = newsService.getNews(id);
+        if (news != null) {
+            return ResponseEntity.ok().body(news);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
     @PostMapping("submit")
-    public Long createNews(@RequestBody News news) {
-        /*response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(json);*/
-        return newsService.createNews(news);
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<News> createNews(@RequestBody News news) {
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/submit").toUriString());
+        return ResponseEntity.created(uri).body(newsService.createNews(news));
 
     }
 
     @GetMapping("news/{id}/comments")
-    public List<Comment> getComments(@PathVariable Long id) {
-        return newsService.getComments(id);
+    public ResponseEntity<List<Comment>> getComments(@PathVariable Long id) {
+        return ResponseEntity.ok().body(newsService.getComments(id));
     }
 
     @PutMapping("news/{id}/newcomment")
@@ -66,12 +72,12 @@ public class NewsController {
     }
 
     @GetMapping("news/user")
-    public List<News> getNewsByUsername(@RequestParam String username) {
-        return newsService.getNewsByUsername(username);
+    public ResponseEntity<List<News>> getNewsByUsername(@RequestParam String username) {
+        return ResponseEntity.ok().body(newsService.getNewsByUsername(username));
     }
     @GetMapping("news/liked")
-    public List<News> getLikedNews(@RequestParam String username){
-        return newsService.getLikedNews(username);
+    public ResponseEntity<List<News>> getLikedNews(@RequestParam String username){
+        return ResponseEntity.ok().body(newsService.getLikedNews(username));
     }
 
 }

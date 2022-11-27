@@ -38,11 +38,11 @@ public class NewsService {
         return newsRepository.findAll(Sort.by(Sort.Direction.DESC, "datePublished"));
     }
 
-    public Optional<News> getNews(Long id) {
+    public Optional<News> getNews(Long id) throws Exception {
         return newsRepository.findById(id);
     }
 
-    public Long createNews(News news) {
+    public News createNews(News news) {
         if (news.getLink() != null) news.setType("url");
         else news.setType("ask");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
@@ -51,14 +51,7 @@ public class NewsService {
         news.setPoints(0);
         User user = userService.getUser(news.getUsername().getUsername());
         news.setUsername(user);
-        try {
-            newsRepository.save(news);
-        }
-        catch (Exception e) {
-            return (long)-1;
-        }
-        return news.getItemId();
-
+        return newsRepository.save(news);
     }
 
 

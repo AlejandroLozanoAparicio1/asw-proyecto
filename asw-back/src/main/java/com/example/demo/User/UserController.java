@@ -14,28 +14,28 @@ public class UserController {
     UserService userService;
 
     @GetMapping("user/users")
-    public List<User> getUsers(){
+    public List<User> getUsers() {
         return userService.getUsers();
     }
 
     @GetMapping("userlogin")
-    public ModelAndView login(){
+    public ModelAndView login() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login.html");
         return modelAndView;
     }
     @GetMapping("user")
-    public User getUser(@RequestParam String username){
+    public User getUser(@RequestParam String username) {
         return userService.getUser(username);
     }
 
     @PostMapping("userk")
-    public User setUser(@RequestBody User user){
+    public User setUser(@RequestBody User user) {
         return userService.modifyUser(user);
     }
 
     @PostMapping("login")
-    public void registerUser(@RequestParam String username){
+    public void registerUser(@RequestParam String username) {
         userService.insertUser(username);
     }
 }
