@@ -61,23 +61,26 @@ public class CommentService {
     }
 
 
-    public void newComment(Comment comment) {
+    public Comment newComment(Comment comment) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String currentDateTime = LocalDateTime.now().format(formatter);
         comment.setTime(currentDateTime);
-        commentRepository.save(comment);
+        return commentRepository.save(comment);
     }
 
-    public void addReply(Long id, Comment reply){
+    public Comment addReply(Long id, Comment reply) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String currentDateTime = LocalDateTime.now().format(formatter);
         reply.setTime(currentDateTime);
 
         Comment comment = commentRepository.findById(id).get();
-
-        commentRepository.save(reply);
-        comment.addComments(new Reply(reply.getId()));
-        commentRepository.save(comment);
+        if (comment != null) {
+            Comment reply2 = commentRepository.save(reply);
+            comment.addComments(new Reply(reply.getId()));
+            commentRepository.save(comment);
+            return reply2;
+        }
+        return null;
     }
 
 
