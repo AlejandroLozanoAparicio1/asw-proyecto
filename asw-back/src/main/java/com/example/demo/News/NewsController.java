@@ -73,9 +73,7 @@ public class NewsController {
 
     @PutMapping("news/{id}/like")
     public ResponseEntity<String> like(@PathVariable("id") Long id, @RequestBody User user) throws Exception {
-        Optional<News> news = newsService.getNews(id);
-        if (news != null) {
-            newsService.like(id, user);
+        if (newsService.like(id, user) != null) {
             return ResponseEntity.ok().body("");
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
