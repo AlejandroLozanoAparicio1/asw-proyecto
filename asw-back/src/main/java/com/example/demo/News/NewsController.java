@@ -68,7 +68,7 @@ public class NewsController {
     public ResponseEntity<Comment> addComment(@PathVariable("id") Long id, @RequestBody Comment comment) {
         Comment comment1 = newsService.newComment(id, comment);
         if (comment1 != null) return ResponseEntity.ok().body(comment1);
-        return null;
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
     @PutMapping("news/{id}/like")
@@ -77,7 +77,6 @@ public class NewsController {
             return ResponseEntity.ok().body("");
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-
     }
 
     @GetMapping("news/user")
