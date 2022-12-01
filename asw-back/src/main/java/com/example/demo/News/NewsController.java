@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 @CrossOrigin
 @RestController
-@CrossOrigin
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class NewsController {
     private final SecurityCheck securityCheck;

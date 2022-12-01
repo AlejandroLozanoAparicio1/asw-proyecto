@@ -30,7 +30,7 @@ public class CommentService {
     public CommentDTO getComment(Long id) {
         if (commentRepository.existsById(id)) {
             Comment comment = commentRepository.findById(id).get();
-            CommentDTO commentDTO = new CommentDTO(comment.getId(), comment.getUser(), comment.getTime(), comment.getBody(), new ArrayList<CommentDTO>());
+            CommentDTO commentDTO = new CommentDTO(comment.getId(), comment.getUser(), comment.getTime(), comment.getBody(), new ArrayList<CommentDTO>(), new ArrayList<User>());
             List<Reply> replies = comment.getReplies();
             getReplies(comment.getReplies(), commentDTO.getReplies());
             return commentDTO;
