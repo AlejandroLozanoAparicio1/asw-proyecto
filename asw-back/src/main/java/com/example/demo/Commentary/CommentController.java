@@ -1,5 +1,6 @@
 package com.example.demo.Commentary;
 
+import com.example.demo.News.DTOLike;
 import com.example.demo.User.User;
 import com.example.demo.Utils.SecurityCheck;
 import org.springframework.http.HttpStatus;
@@ -12,9 +13,6 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE
-)
 @CrossOrigin
 public class CommentController {
 
@@ -79,9 +77,12 @@ public class CommentController {
     }
     @PutMapping("comment")
     @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<Comment> addComment(@RequestBody Comment comment,
                                               @RequestHeader(value = "username") String userApi,
-                                              @RequestHeader(value = "apiKey") String apikey) {
+                                              @RequestHeader(value = "apiKey") String apikey
+                                              ) {
         if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/submit").toUriString());
             return ResponseEntity.created(uri).body(commentService.newComment(comment));
@@ -90,11 +91,14 @@ public class CommentController {
     }
 
     @PutMapping("comment/{id}/like")
-    public ResponseEntity<String> like(@PathVariable("id") Long id, @RequestBody User user,
+    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<String> like(@RequestBody DTOLike dtoLike,
                                        @RequestHeader(value = "username") String userApi,
                                        @RequestHeader(value = "apiKey") String apikey) {
         if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
-            if (commentService.like(id, user)) {
+            if (commentService.like(dtoLike.getId(), dtoLike.getUser())) {
                 ResponseEntity.ok().body("");
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

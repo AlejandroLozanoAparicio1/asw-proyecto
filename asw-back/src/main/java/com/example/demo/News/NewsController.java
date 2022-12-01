@@ -15,9 +15,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin
-@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE
-)
+@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class NewsController {
     private final SecurityCheck securityCheck;
 
@@ -88,6 +86,7 @@ public class NewsController {
 
     @PostMapping("submit")
     @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<News> createNews(@RequestBody News news,
                                            @RequestHeader(value = "username") String userApi,
                                            @RequestHeader(value = "apiKey") String apikey) {

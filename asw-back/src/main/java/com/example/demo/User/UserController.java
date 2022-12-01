@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
+@RequestMapping(
         produces = MediaType.APPLICATION_JSON_VALUE
 )
 public class UserController {
@@ -22,6 +22,7 @@ public class UserController {
         this.securityCheck = securityCheck;
         this.userService = userService;
     }
+
     private final SecurityCheck securityCheck;
     private final UserService userService;
 
@@ -30,7 +31,7 @@ public class UserController {
             @RequestHeader(value = "username") String userApi,
             @RequestHeader(value = "apiKey") String apikey
     ) {
-        if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
+        if (securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
             return ResponseEntity.ok().body(userService.getUsers());
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
@@ -40,7 +41,7 @@ public class UserController {
     public ResponseEntity<User> getUser(@RequestParam String username,
                                         @RequestHeader(value = "username") String userApi,
                                         @RequestHeader(value = "apiKey") String apikey) {
-        if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
+        if (securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
             User user = userService.getUser(username);
             if (user != null) return ResponseEntity.ok().body(user);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -50,10 +51,11 @@ public class UserController {
 
     @PostMapping("user")
     @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> setUser(@RequestBody User user,
                                         @RequestHeader(value = "username") String userApi,
                                         @RequestHeader(value = "apiKey") String apikey) {
-        if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
+        if (securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user").toUriString());
             return ResponseEntity.created(uri).body(userService.modifyUser(user));
         }
@@ -62,13 +64,11 @@ public class UserController {
 
     @PostMapping("register")
     public ResponseEntity<User> registerUser(@RequestParam String username,
-                             @RequestHeader(value = "username") String userApi,
-                             @RequestHeader(value = "apiKey") String apikey){
-        if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
-            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user").toUriString());
-            return ResponseEntity.created(uri).body(userService.insertUser(username));
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+                                             @RequestHeader(value = "username") String userApi,
+                                             @RequestHeader(value = "apiKey") String apikey) {
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user").toUriString());
+        return ResponseEntity.created(uri).body(userService.insertUser(username));
+        
     }
 
 }
