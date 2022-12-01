@@ -1,9 +1,9 @@
 package com.example.demo.Commentary;
 
-import com.example.demo.News.News;
 import com.example.demo.Reply.Reply;
-import com.example.demo.User.HackNewsRepository;
+import com.example.demo.User.UserRepository;
 import com.example.demo.User.User;
+import com.example.demo.Utils.DTOs.CommentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class CommentService {
     private CommentRepository commentRepository;
 
     @Autowired
-    private HackNewsRepository userRepository;
+    private UserRepository userRepository;
 
     public List<Comment> getCommentList() {
         List<Comment> a = commentRepository.findAll(Sort.by(Sort.Direction.DESC, "time"));
@@ -29,11 +29,14 @@ public class CommentService {
     }
 
     public CommentDTO getComment(Long id) {
-        Comment comment = commentRepository.findById(id).get();
-        CommentDTO commentDTO = new CommentDTO(comment.getId(), comment.getUser(), comment.getTime(), comment.getBody(), new ArrayList<CommentDTO>(), new ArrayList<User>());
-        List<Reply> replies = comment.getReplies();
-        getReplies(comment.getReplies(), commentDTO.getReplies());
-        return commentDTO;
+        if (commentRepository.existsById(id)) {
+            Comment comment = commentRepository.findById(id).get();
+            CommentDTO commentDTO = new CommentDTO(comment.getId(), comment.getUser(), comment.getTime(), comment.getBody(), new ArrayList<CommentDTO>(), new ArrayList<User>());
+            List<Reply> replies = comment.getReplies();
+            getReplies(comment.getReplies(), commentDTO.getReplies());
+            return commentDTO;
+        }
+        return null;
     }
 
     private void getReplies(List<Reply> replies, List<CommentDTO> comments){
@@ -50,44 +53,55 @@ public class CommentService {
     }
 
     public List<Comment> getUserComments(String id) {
-        userRepository.findById(id);
-        List<Comment> comments = commentRepository.findAll();
-        List<Comment> res = new ArrayList<>();
-        for (Comment comment : comments) {
-            if (comment.getUser().getUsername() == id)
-                res.add(comment);
+        if (userRepository.existsById(id)) {
+            userRepository.findById(id);
+            List<Comment> comments = commentRepository.findAll();
+            List<Comment> res = new ArrayList<>();
+            for (Comment comment : comments) {
+                if (comment.getUser().getUsername() == id)
+                    res.add(comment);
+            }
+            return res;
         }
-        return res;
+        return null;
     }
 
 
-    public void newComment(Comment comment) {
+    public Comment newComment(Comment comment) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String currentDateTime = LocalDateTime.now().format(formatter);
         comment.setTime(currentDateTime);
-        commentRepository.save(comment);
+        return commentRepository.save(comment);
     }
 
-    public void addReply(Long id, Comment reply){
+    public Comment addReply(Long id, Comment reply) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String currentDateTime = LocalDateTime.now().format(formatter);
         reply.setTime(currentDateTime);
 
-        Comment comment = commentRepository.findById(id).get();
-
-        commentRepository.save(reply);
-        comment.addComments(new Reply(reply.getId()));
-        commentRepository.save(comment);
+        if (commentRepository.existsById(id)) {
+            Comment comment = commentRepository.findById(id).get();
+            Comment reply2 = commentRepository.save(reply);
+            comment.addComments(new Reply(reply.getId()));
+            commentRepository.save(comment);
+            return reply2;
+        }
+        return null;
     }
 
 
-    public void like(Long id, User user) {
-        Comment comment = commentRepository.findById(id).get();
-        int add = comment.like(user);
-        User us = userRepository.findUserByUsername(comment.getUser().getUsername());
-        us.setKarma(us.getKarma() + add);
-        userRepository.save(us);
-        commentRepository.save(comment);
+    public Boolean like(Long id, User user) {
+
+        if (commentRepository.existsById(id)) {
+            Comment comment = commentRepository.findById(id).get();
+            int add = comment.like(user);
+            User us = userRepository.findUserByUsername(comment.getUser().getUsername());
+            us.setKarma(us.getKarma() + add);
+            userRepository.save(us);
+            commentRepository.save(comment);
+            return true;
+        }
+        return false;
     }
 
     public List<Comment> liked(String username) {

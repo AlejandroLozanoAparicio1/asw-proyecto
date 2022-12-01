@@ -1,6 +1,5 @@
-package com.example.demo.Commentary;
+package com.example.demo.Utils.DTOs;
 
-import com.example.demo.Reply.Reply;
 import com.example.demo.User.User;
 
 import java.util.List;

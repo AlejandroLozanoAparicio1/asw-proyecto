@@ -2,7 +2,7 @@ package com.example.demo.News;
 
 import com.example.demo.Commentary.Comment;
 import com.example.demo.Commentary.CommentRepository;
-import com.example.demo.User.HackNewsRepository;
+import com.example.demo.User.UserRepository;
 import com.example.demo.User.User;
 import com.example.demo.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class NewsService {
     private NewsRepository newsRepository;
 
     @Autowired
-    private HackNewsRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
     private CommentRepository commentRepository;
 
@@ -39,10 +39,11 @@ public class NewsService {
     }
 
     public Optional<News> getNews(Long id) {
-        return newsRepository.findById(id);
+        if (newsRepository.existsById(id)) return newsRepository.findById(id);
+        return null;
     }
 
-    public Long createNews(News news) {
+    public News createNews(News news) {
         if (news.getLink() != null) news.setType("url");
         else news.setType("ask");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
@@ -51,38 +52,43 @@ public class NewsService {
         news.setPoints(0);
         User user = userService.getUser(news.getUsername().getUsername());
         news.setUsername(user);
-        try {
-            newsRepository.save(news);
-        }
-        catch (Exception e) {
-            return (long)-1;
-        }
-        return news.getItemId();
-
+        return newsRepository.save(news);
     }
 
 
     public List<Comment> getComments(Long id) {
-        return newsRepository.findById(id).get().getComments();
+        News news = newsRepository.findById(id).get();
+        if (news != null) {
+            return news.getComments();
+        }
+        return null;
     }
 
-    public void newComment(Long id, Comment comment) {
+    public Comment newComment(Long id, Comment comment) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String currentDateTime = LocalDateTime.now().format(formatter);
         comment.setTime(currentDateTime);
-        commentRepository.save(comment);
-        News news = newsRepository.findById(id).get();
-        news.addComment(comment);
-        newsRepository.save(news);
+        if (newsRepository.existsById(id)) {
+            News news = newsRepository.findById(id).get();
+            Comment comment1 = commentRepository.save(comment);
+            news.addComment(comment);
+            newsRepository.save(news);
+            return comment1;
+        }
+        return null;
     }
 
-    public void like(Long id, User user) {
-        News news = newsRepository.findById(id).get();
-        int add = news.like(user);
-        User us = userRepository.findUserByUsername(news.getUsername().getUsername());
-        us.setKarma(us.getKarma() + add);
-        userRepository.save(us);
-        newsRepository.save(news);
+    public String like(Long id, User user) {
+        if (newsRepository.existsById(id)) {
+            News news = newsRepository.findById(id).get();
+            int add = news.like(user);
+            User us = userRepository.findUserByUsername(news.getUsername().getUsername());
+            us.setKarma(us.getKarma() + add);
+            userRepository.save(us);
+            newsRepository.save(news);
+            return "";
+        }
+        return null;
     }
 
     public List<News> getNewsAsk() {
@@ -110,10 +116,12 @@ public class NewsService {
     }
 
     public List<News> getNewsByUsername(String username) {
-        return newsRepository.findAllByUsername(username);
+        if (userRepository.existsById(username)) return newsRepository.findAllByUsername(username);
+        return null;
     }
 
     public List<News> getLikedNews(String username) {
-        return newsRepository.getLikedNews(username);
+        if (userRepository.existsById(username)) return newsRepository.getLikedNews(username);
+        return null;
     }
 }

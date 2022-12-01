@@ -1,42 +1,73 @@
 package com.example.demo.User;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.Utils.SecurityCheck;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 import java.util.List;
 
 @CrossOrigin
 @RestController
-@CrossOrigin
+@RequestMapping(
+        produces = MediaType.APPLICATION_JSON_VALUE
+)
 public class UserController {
-    @Autowired
-    UserService userService;
 
-    @GetMapping("user/users")
-    public List<User> getUsers(){
-        return userService.getUsers();
+    public UserController(SecurityCheck securityCheck, UserService userService) {
+        this.securityCheck = securityCheck;
+        this.userService = userService;
     }
 
-    @GetMapping("userlogin")
-    public ModelAndView login(){
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login.html");
-        return modelAndView;
+    private final SecurityCheck securityCheck;
+    private final UserService userService;
+
+    @GetMapping("users")
+    public ResponseEntity<List<User>> getUsers(
+            @RequestHeader(value = "username") String userApi,
+            @RequestHeader(value = "apiKey") String apikey
+    ) {
+        if (securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
+            return ResponseEntity.ok().body(userService.getUsers());
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
+
     @GetMapping("user")
-    public User getUser(@RequestParam String username){
-        return userService.getUser(username);
+    public ResponseEntity<User> getUser(@RequestParam String username,
+                                        @RequestHeader(value = "username") String userApi,
+                                        @RequestHeader(value = "apiKey") String apikey) {
+        if (securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
+            User user = userService.getUser(username);
+            if (user != null) return ResponseEntity.ok().body(user);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
-    @PostMapping("userk")
-    public User setUser(@RequestBody User user){
-        return userService.modifyUser(user);
+    @PostMapping(value = "user", consumes =  MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<User> setUser(@RequestBody User user,
+                                        @RequestHeader(value = "username") String userApi,
+                                        @RequestHeader(value = "apiKey") String apikey) {
+        if (securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user").toUriString());
+            return ResponseEntity.created(uri).body(userService.modifyUser(user));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
-    @PostMapping("login")
-    public void registerUser(@RequestParam String username){
-        userService.insertUser(username);
+    @PostMapping("register")
+    public ResponseEntity<User> registerUser(@RequestParam String username,
+                                             @RequestHeader(value = "username") String userApi,
+                                             @RequestHeader(value = "apiKey") String apikey) {
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user").toUriString());
+        return ResponseEntity.created(uri).body(userService.insertUser(username));
+        
     }
+
 }
