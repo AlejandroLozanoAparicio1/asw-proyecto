@@ -12,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @CrossOrigin
 public class CommentController {
@@ -47,6 +48,7 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
+    @CrossOrigin
     @GetMapping("comment/user/{id}")
     public ResponseEntity<List<Comment>> getUserComments(@PathVariable("id") String id,
                                                          @RequestHeader(value = "username") String userApi,

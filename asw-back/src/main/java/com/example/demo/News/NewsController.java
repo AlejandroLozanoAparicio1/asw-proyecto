@@ -12,7 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-
+@CrossOrigin
 @RestController
 @CrossOrigin
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -36,6 +36,7 @@ public class NewsController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
+
 
     @GetMapping("ask")
     public ResponseEntity<List<News>> getNewsAsk(
@@ -70,6 +71,7 @@ public class NewsController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
+    @CrossOrigin
     @GetMapping("news/{id}")
     public ResponseEntity<Optional<News>> getNews(@PathVariable Long id,
                                                   @RequestHeader(value = "username") String userApi,
