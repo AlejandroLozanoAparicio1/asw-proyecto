@@ -1,23 +1,23 @@
 package com.example.demo.User;
 
-import org.springframework.boot.web.client.RestTemplateBuilder;
+
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
-public class UserService {
-    private final HackNewsRepository hackNewsRepository;
-    private final RestTemplate restTemplate;
+public class UserService  {
+    private final UserRepository hackNewsRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private Random random = new Random();
 
-    UserService(HackNewsRepository hackNewsRepository, RestTemplateBuilder restTemplateBuilder) {
+    UserService(UserRepository hackNewsRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.hackNewsRepository = hackNewsRepository;
-        this.restTemplate = restTemplateBuilder.build();
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public List<User> getUsers() {
@@ -37,10 +37,11 @@ public class UserService {
     public User insertUser(String username) {
         User user = hackNewsRepository.findUserByUsername(username);
         if (user == null) {
+            String apiKey = bCryptPasswordEncoder.encode(username.concat(random.ints(0, 1000000).toString()));
             ZoneId defaultZoneId = ZoneId.systemDefault();
             Date currentDate = Date.from(LocalDate.now().atStartOfDay(defaultZoneId).toInstant());
             User newUser = new User(
-                    username, currentDate, 1, "", 20, 120, 0, false, false
+                    username, currentDate, 1, "", 20, 120, 0, false, false, apiKey, apiKey
             );
             return hackNewsRepository.save(newUser);
         }
@@ -51,4 +52,9 @@ public class UserService {
         return hackNewsRepository.save(user);
     }
 
+
+    public User checkByUsernameAndKey(String username, String apiKey){
+        return hackNewsRepository.findUserByApiKeyAndUsername(apiKey, username);
+
+    }
 }

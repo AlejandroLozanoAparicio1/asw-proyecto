@@ -2,7 +2,7 @@ package com.example.demo.News;
 
 import com.example.demo.Commentary.Comment;
 import com.example.demo.Commentary.CommentRepository;
-import com.example.demo.User.HackNewsRepository;
+import com.example.demo.User.UserRepository;
 import com.example.demo.User.User;
 import com.example.demo.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class NewsService {
     private NewsRepository newsRepository;
 
     @Autowired
-    private HackNewsRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
     private CommentRepository commentRepository;
 

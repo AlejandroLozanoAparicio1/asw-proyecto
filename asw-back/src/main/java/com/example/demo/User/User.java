@@ -1,12 +1,16 @@
 package com.example.demo.User;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import net.bytebuddy.dynamic.loading.InjectionClassLoader;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "persona")
+@Table(name = "user")
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     @Id
     @Column
@@ -27,21 +31,26 @@ public class User {
     private boolean showdead;
     @Column
     private boolean noprocrast;
-    public User() {
+    @Column
+    private String apiKey;
+    @Column
+    private String password;
+
+    public String getPassword() {
+        return password;
     }
 
-    public User(String username, Date created, int karma, String about, int maxvisit, int minaway, int delay, boolean showdead, boolean noprocrast) {
-        this.username = username;
-        this.created = created;
-        this.karma = karma;
-        this.about = about;
-        this.maxvisit = maxvisit;
-        this.minaway = minaway;
-        this.delay = delay;
-        this.showdead = showdead;
-        this.noprocrast = noprocrast;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
 
     public Date getCreated() {
         return created;
