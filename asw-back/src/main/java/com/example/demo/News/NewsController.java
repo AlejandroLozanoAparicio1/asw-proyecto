@@ -2,76 +2,157 @@ package com.example.demo.News;
 
 import com.example.demo.Commentary.Comment;
 import com.example.demo.User.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.Utils.SecurityCheck;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @CrossOrigin
+@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+)
 public class NewsController {
-    @Autowired
-    NewsService newsService;
+    private final SecurityCheck securityCheck;
+
+    public NewsController(SecurityCheck securityCheck, NewsService newsService) {
+        this.securityCheck = securityCheck;
+        this.newsService = newsService;
+    }
+
+    private final NewsService newsService;
 
     @GetMapping("news")
-    public List<News> getNewsList() {
-        return newsService.getNewsList();
+    public ResponseEntity<List<News>> getNewsList(
+            @RequestHeader(value = "username") String userApi,
+            @RequestHeader(value = "apiKey") String apikey
+    ) {
+        if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
+            return ResponseEntity.ok().body(newsService.getNewsList());
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @GetMapping("ask")
-    public List<News> getNewsAsk() {
-        return newsService.getNewsAsk();
+    public ResponseEntity<List<News>> getNewsAsk(
+            @RequestHeader(value = "username") String userApi,
+            @RequestHeader(value = "apiKey") String apikey
+    ) {
+        if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
+            return ResponseEntity.ok().body(newsService.getNewsAsk());
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @GetMapping("show")
-    public List<News> getNewsShow() {
-        return newsService.getNewsShow();
+    public ResponseEntity<List<News>> getNewsShow(
+            @RequestHeader(value = "username") String userApi,
+            @RequestHeader(value = "apiKey") String apikey
+    ) {
+        if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
+            return ResponseEntity.ok().body(newsService.getNewsShow());
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @GetMapping("newest")
-    public List<News> getNewest() {
-        return newsService.getNewest();
+    public ResponseEntity<List<News>> getNewest(
+            @RequestHeader(value = "username") String userApi,
+            @RequestHeader(value = "apiKey") String apikey
+    ) {
+        if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
+            return ResponseEntity.ok().body(newsService.getNewest());
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @GetMapping("news/{id}")
-    public Optional<News> getNews(@PathVariable Long id) {
-        return newsService.getNews(id);
+    public ResponseEntity<Optional<News>> getNews(@PathVariable Long id,
+                                                  @RequestHeader(value = "username") String userApi,
+                                                  @RequestHeader(value = "apiKey") String apikey) throws Exception {
+        if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
+            Optional<News> news = newsService.getNews(id);
+            if (news != null) {
+                return ResponseEntity.ok().body(news);
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @PostMapping("submit")
-    public Long createNews(@RequestBody News news) {
-        /*response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(json);*/
-        return newsService.createNews(news);
-
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<News> createNews(@RequestBody News news,
+                                           @RequestHeader(value = "username") String userApi,
+                                           @RequestHeader(value = "apiKey") String apikey) {
+        if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/submit").toUriString());
+            return ResponseEntity.created(uri).body(newsService.createNews(news));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @GetMapping("news/{id}/comments")
-    public List<Comment> getComments(@PathVariable Long id) {
-        return newsService.getComments(id);
+    public ResponseEntity<List<Comment>> getComments(@PathVariable Long id,
+                                                     @RequestHeader(value = "username") String userApi,
+                                                     @RequestHeader(value = "apiKey") String apikey) {
+        if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
+            List<Comment> list = newsService.getComments(id);
+            if (list != null) return ResponseEntity.ok().body(list);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @PutMapping("news/{id}/newcomment")
-    public void addComment(@PathVariable("id") Long id, @RequestBody Comment comment) {
-        newsService.newComment(id, comment);
+    public ResponseEntity<Comment> addComment(@PathVariable("id") Long id, @RequestBody Comment comment,
+                                              @RequestHeader(value = "username") String userApi,
+                                              @RequestHeader(value = "apiKey") String apikey) {
+        if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
+            Comment comment1 = newsService.newComment(id, comment);
+            if (comment1 != null) return ResponseEntity.ok().body(comment1);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @PutMapping("news/{id}/like")
-    public void like(@PathVariable("id") Long id, @RequestBody User user) {
-        newsService.like(id, user);
+    public ResponseEntity<String> like(@PathVariable("id") Long id, @RequestBody User user,
+                                       @RequestHeader(value = "username") String userApi,
+                                       @RequestHeader(value = "apiKey") String apikey) throws Exception {
+        if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
+            if (newsService.like(id, user) != null) {
+                return ResponseEntity.ok().body("");
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @GetMapping("news/user")
-    public List<News> getNewsByUsername(@RequestParam String username) {
-        return newsService.getNewsByUsername(username);
+    public ResponseEntity<List<News>> getNewsByUsername(@RequestParam String username,
+                                                        @RequestHeader(value = "username") String userApi,
+                                                        @RequestHeader(value = "apiKey") String apikey) {
+        if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
+            return ResponseEntity.ok().body(newsService.getNewsByUsername(username));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
+
     @GetMapping("news/liked")
-    public List<News> getLikedNews(@RequestParam String username){
-        return newsService.getLikedNews(username);
+    public ResponseEntity<List<News>> getLikedNews(@RequestParam String username,
+                                                   @RequestHeader(value = "username") String userApi,
+                                                   @RequestHeader(value = "apiKey") String apikey) {
+        if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
+            return ResponseEntity.ok().body(newsService.getLikedNews(username));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
 }
