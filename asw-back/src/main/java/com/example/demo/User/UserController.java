@@ -1,8 +1,6 @@
 package com.example.demo.User;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -10,8 +8,11 @@ import java.util.List;
 @RestController
 @CrossOrigin
 public class UserController {
-    @Autowired
-    UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("user/users")
     public List<User> getUsers(){
@@ -34,8 +35,9 @@ public class UserController {
         return userService.modifyUser(user);
     }
 
-    @PostMapping("login")
+    @PostMapping("user")
     public void registerUser(@RequestParam String username){
         userService.insertUser(username);
     }
+
 }

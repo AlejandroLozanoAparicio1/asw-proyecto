@@ -1,8 +1,7 @@
 package com.example.demo.Commentary;
 
-import com.example.demo.News.News;
 import com.example.demo.Reply.Reply;
-import com.example.demo.User.HackNewsRepository;
+import com.example.demo.User.UserRepository;
 import com.example.demo.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -21,7 +20,7 @@ public class CommentService {
     private CommentRepository commentRepository;
 
     @Autowired
-    private HackNewsRepository userRepository;
+    private UserRepository userRepository;
 
     public List<Comment> getCommentList() {
         List<Comment> a = commentRepository.findAll(Sort.by(Sort.Direction.DESC, "time"));
