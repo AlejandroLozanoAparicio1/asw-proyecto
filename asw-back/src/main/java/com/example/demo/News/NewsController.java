@@ -2,6 +2,8 @@ package com.example.demo.News;
 
 import com.example.demo.Commentary.Comment;
 import com.example.demo.User.User;
+import com.example.demo.Utils.DTOs.DTOLike;
+import com.example.demo.Utils.DTOs.DTOReply;
 import com.example.demo.Utils.SecurityCheck;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,12 +14,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-
-@RestController
 @CrossOrigin
-@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE
-)
+@RestController
+@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class NewsController {
     private final SecurityCheck securityCheck;
 
@@ -38,6 +37,7 @@ public class NewsController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
+
 
     @GetMapping("ask")
     public ResponseEntity<List<News>> getNewsAsk(
@@ -72,6 +72,7 @@ public class NewsController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
+    @CrossOrigin
     @GetMapping("news/{id}")
     public ResponseEntity<Optional<News>> getNews(@PathVariable Long id,
                                                   @RequestHeader(value = "username") String userApi,
@@ -86,7 +87,7 @@ public class NewsController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
-    @PostMapping("submit")
+    @PostMapping(value = "submit", consumes =  MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<News> createNews(@RequestBody News news,
                                            @RequestHeader(value = "username") String userApi,
@@ -110,24 +111,24 @@ public class NewsController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
-    @PutMapping("news/{id}/newcomment")
-    public ResponseEntity<Comment> addComment(@PathVariable("id") Long id, @RequestBody Comment comment,
+    @PutMapping(value = "news/{id}/newcomment", consumes =  MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Comment> addComment(@RequestBody DTOReply dtoReply,
                                               @RequestHeader(value = "username") String userApi,
                                               @RequestHeader(value = "apiKey") String apikey) {
         if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
-            Comment comment1 = newsService.newComment(id, comment);
+            Comment comment1 = newsService.newComment(dtoReply.getId(), dtoReply.getComment());
             if (comment1 != null) return ResponseEntity.ok().body(comment1);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
-    @PutMapping("news/{id}/like")
-    public ResponseEntity<String> like(@PathVariable("id") Long id, @RequestBody User user,
+    @PutMapping(value = "news/{id}/like", consumes =  MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> like(@RequestBody DTOLike dtoLike,
                                        @RequestHeader(value = "username") String userApi,
                                        @RequestHeader(value = "apiKey") String apikey) throws Exception {
         if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
-            if (newsService.like(id, user) != null) {
+            if (newsService.like(dtoLike.getId(), dtoLike.getUser()).equals(null)) {
                 return ResponseEntity.ok().body("");
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
