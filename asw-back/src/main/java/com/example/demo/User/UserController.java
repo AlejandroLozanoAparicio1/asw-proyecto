@@ -62,9 +62,7 @@ public class UserController {
     }
 
     @PostMapping("register")
-    public ResponseEntity<User> registerUser(@RequestParam String username,
-                                             @RequestHeader(value = "username") String userApi,
-                                             @RequestHeader(value = "apiKey") String apikey) {
+    public ResponseEntity<User> registerUser(@RequestParam String username) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user").toUriString());
         return ResponseEntity.created(uri).body(userService.insertUser(username));
         
