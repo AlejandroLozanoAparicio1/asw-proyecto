@@ -13,7 +13,6 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@CrossOrigin
 @RequestMapping(
         produces = MediaType.APPLICATION_JSON_VALUE
 )
