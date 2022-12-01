@@ -1,4 +1,4 @@
-package com.example.demo.News;
+package com.example.demo.Utils.DTOs;
 
 import com.example.demo.User.User;
 

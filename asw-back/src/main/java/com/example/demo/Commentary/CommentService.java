@@ -3,6 +3,7 @@ package com.example.demo.Commentary;
 import com.example.demo.Reply.Reply;
 import com.example.demo.User.UserRepository;
 import com.example.demo.User.User;
+import com.example.demo.Utils.DTOs.CommentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

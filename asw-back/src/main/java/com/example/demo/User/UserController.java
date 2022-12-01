@@ -49,9 +49,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
-    @PostMapping("user")
+    @PostMapping(value = "user", consumes =  MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> setUser(@RequestBody User user,
                                         @RequestHeader(value = "username") String userApi,
                                         @RequestHeader(value = "apiKey") String apikey) {
