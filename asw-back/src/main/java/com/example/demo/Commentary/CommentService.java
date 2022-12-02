@@ -58,7 +58,7 @@ public class CommentService {
             List<Comment> comments = commentRepository.findAll();
             List<Comment> res = new ArrayList<>();
             for (Comment comment : comments) {
-                if (comment.getUser().getUsername() == id)
+                if (comment.getUser().getUsername().equals(id))
                     res.add(comment);
             }
             return res;
