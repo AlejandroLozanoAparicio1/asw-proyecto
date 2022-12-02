@@ -55,6 +55,9 @@ public class UserService  {
 
     public User checkByUsernameAndKey(String username, String apiKey){
         return hackNewsRepository.findUserByApiKeyAndUsername(apiKey, username);
+    }
 
+    public User getUserByKey(String apiKey){
+        return hackNewsRepository.findUserByApiKey(apiKey);
     }
 }
