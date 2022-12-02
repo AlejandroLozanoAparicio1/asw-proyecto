@@ -98,7 +98,7 @@ public class CommentController {
                                        @RequestHeader(value = "apiKey") String apikey) {
         if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
             if (commentService.like(dtoLike.getId(), dtoLike.getUser())) {
-                ResponseEntity.ok().body("");
+                return ResponseEntity.ok().body("");
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
