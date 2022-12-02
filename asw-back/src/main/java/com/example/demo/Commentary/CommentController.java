@@ -71,7 +71,7 @@ public class CommentController {
         if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
             Comment com = commentService.addReply(dtoReply.getId(), dtoReply.getComment());
             if (com != null) {
-                URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("news/{id}/reply").toUriString());
+                URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("news/reply").toUriString());
                 return ResponseEntity.created(uri).body(com);
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

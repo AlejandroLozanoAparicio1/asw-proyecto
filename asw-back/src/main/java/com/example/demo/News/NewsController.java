@@ -128,7 +128,7 @@ public class NewsController {
                                        @RequestHeader(value = "username") String userApi,
                                        @RequestHeader(value = "apiKey") String apikey) throws Exception {
         if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
-            if (newsService.like(dtoLike.getId(), dtoLike.getUser()).equals(null)) {
+            if (newsService.like(dtoLike.getId(), dtoLike.getUser()) != null) {
                 return ResponseEntity.ok().body("");
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
