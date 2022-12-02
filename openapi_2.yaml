@@ -8,7 +8,7 @@ info:
     - [Taiga](https://tree.taiga.io/project/akram_t-asw-proyecto/timeline)
   version: 1.0.0
 servers:
-  - url: https://asw-deploy2-production.up.railway.app/
+  - url: https://asw-back-deployment-production.up.railway.app/
   - url: http://localhost:8080/
 tags:
   - name: User
@@ -569,7 +569,7 @@ paths:
         - News
       summary: Get Comments of the News with itemId = id
       description: ""
-      operationId: getComments
+      operationId: getNewsComments
       parameters:
         - name: id
           in: path
@@ -594,7 +594,8 @@ paths:
             application/json:
               schema:
                 type: array
-                $ref: "#/components/schemas/Comment"
+                items:
+                  $ref: "#/components/schemas/Comment"
         "400":
           description: Invalid parameters
         "401":
@@ -630,7 +631,8 @@ paths:
             application/json:
               schema:
                 type: array
-                $ref: "#/components/schemas/News"
+                items:
+                  $ref: "#/components/schemas/News"
         "400":
           description: Invalid parameters
         "401":
@@ -666,7 +668,8 @@ paths:
             application/json:
               schema:
                 type: array
-                $ref: "#/components/schemas/News"
+                items:
+                  $ref: "#/components/schemas/News"
         "400":
           description: Invalid parameters
         "401":
@@ -679,12 +682,6 @@ paths:
       description: ""
       operationId: createNews
       parameters:
-        - name: username
-          in: query
-          description: The username that needs to be fetched
-          required: true
-          schema:
-            type: string
         - in: header
           name: username
           required: true
@@ -755,7 +752,7 @@ paths:
         - News
       summary: Like News
       description: ""
-      operationId: like
+      operationId: likeNews
       parameters:
         - in: header
           name: username
@@ -919,7 +916,8 @@ components:
           example: "url"
         comments:
           type: array
-          $ref: "#/components/schemas/Comment"
+          items:
+            $ref: "#/components/schemas/Comment"
         likedBy:
           type: array
           items:
