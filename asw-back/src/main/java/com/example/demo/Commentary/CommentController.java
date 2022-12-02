@@ -63,7 +63,7 @@ public class CommentController {
 
     }
 
-    @PutMapping(value ="news/{id}/reply", consumes =  MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value ="news/reply", consumes =  MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Comment> addReply(@RequestBody DTOReply dtoReply,
                                             @RequestHeader(value = "username") String userApi,
@@ -78,6 +78,7 @@ public class CommentController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
+    /*
     @PutMapping(value = "comment", consumes =  MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Comment> addComment(@RequestBody Comment comment,
@@ -89,9 +90,9 @@ public class CommentController {
             return ResponseEntity.created(uri).body(commentService.newComment(comment));
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-    }
+    }*/
 
-    @PutMapping(value = "comment/{id}/like", consumes =  MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "comment/like", consumes =  MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> like(@RequestBody DTOLike dtoLike,
                                        @RequestHeader(value = "username") String userApi,
                                        @RequestHeader(value = "apiKey") String apikey) {
