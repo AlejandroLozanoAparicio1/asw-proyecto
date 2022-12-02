@@ -111,7 +111,7 @@ public class NewsController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
-    @PutMapping(value = "news/{id}/newcomment", consumes =  MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "news/newcomment", consumes =  MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Comment> addComment(@RequestBody DTOReply dtoReply,
                                               @RequestHeader(value = "username") String userApi,
                                               @RequestHeader(value = "apiKey") String apikey) {
@@ -123,12 +123,12 @@ public class NewsController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
-    @PutMapping(value = "news/{id}/like", consumes =  MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "news/like", consumes =  MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> like(@RequestBody DTOLike dtoLike,
                                        @RequestHeader(value = "username") String userApi,
                                        @RequestHeader(value = "apiKey") String apikey) throws Exception {
         if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
-            if (newsService.like(dtoLike.getId(), dtoLike.getUser()).equals(null)) {
+            if (newsService.like(dtoLike.getId(), dtoLike.getUser()) != null) {
                 return ResponseEntity.ok().body("");
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

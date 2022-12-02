@@ -116,12 +116,12 @@ public class NewsService {
     }
 
     public List<News> getNewsByUsername(String username) {
-        if (userRepository.existsById(username)) return newsRepository.findAllByUsername(username);
+        if (userRepository.existsByUsername(username)) return newsRepository.findAllByUsername(username);
         return null;
     }
 
     public List<News> getLikedNews(String username) {
-        if (userRepository.existsById(username)) return newsRepository.getLikedNews(username);
+        if (userRepository.existsByUsername(username)) return newsRepository.getLikedNews(username);
         return null;
     }
 }

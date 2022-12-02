@@ -63,7 +63,7 @@ public class CommentController {
 
     }
 
-    @PutMapping(value ="news/{id}/reply", consumes =  MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value ="news/reply", consumes =  MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Comment> addReply(@RequestBody DTOReply dtoReply,
                                             @RequestHeader(value = "username") String userApi,
@@ -71,13 +71,14 @@ public class CommentController {
         if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
             Comment com = commentService.addReply(dtoReply.getId(), dtoReply.getComment());
             if (com != null) {
-                URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("news/{id}/reply").toUriString());
+                URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("news/reply").toUriString());
                 return ResponseEntity.created(uri).body(com);
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
+    /*
     @PutMapping(value = "comment", consumes =  MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Comment> addComment(@RequestBody Comment comment,
@@ -89,15 +90,15 @@ public class CommentController {
             return ResponseEntity.created(uri).body(commentService.newComment(comment));
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-    }
+    }*/
 
-    @PutMapping(value = "comment/{id}/like", consumes =  MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "comment/like", consumes =  MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> like(@RequestBody DTOLike dtoLike,
                                        @RequestHeader(value = "username") String userApi,
                                        @RequestHeader(value = "apiKey") String apikey) {
         if(securityCheck.checkUserIsAuthenticated(userApi, apikey)) {
             if (commentService.like(dtoLike.getId(), dtoLike.getUser())) {
-                ResponseEntity.ok().body("");
+                return ResponseEntity.ok().body("");
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
