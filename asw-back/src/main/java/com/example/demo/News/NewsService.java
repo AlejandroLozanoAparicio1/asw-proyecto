@@ -44,9 +44,12 @@ public class NewsService {
     }
 
     public News createNews(News news) {
-        if (news.getLink() != null) news.setType("url");
-        else news.setType("ask");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        if (news.getLink() != null && !news.getLink().equals("")) news.setType("url");
+        else {
+            news.setLink(null);
+            news.setType("ask");
+        }
+         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String currentDateTime = LocalDateTime.now().format(formatter);
         news.setDatePublished(currentDateTime);
         news.setPoints(0);
